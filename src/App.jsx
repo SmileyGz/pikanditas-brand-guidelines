@@ -51,7 +51,7 @@ function App() {
       {/* Logo Card */}
       <div className="card tilt-right polaroid">
         <div className="logo-container">
-          <img src="/logo.png" alt="Logo de Pikanditas" onError={(e) => {
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="Logo de Pikanditas" onError={(e) => {
             e.target.onerror = null; 
             e.target.src = 'https://via.placeholder.com/400x400/FF0055/ffffff?text=Reemplazar+por+logo.png';
           }} />
