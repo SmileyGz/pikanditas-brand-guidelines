@@ -34,6 +34,11 @@ function CostCalculator() {
     };
   });
 
+  const [projectionQty, setProjectionQty] = useState(() => {
+    const saved = localStorage.getItem('pikanditas_projection_qty');
+    return saved ? Number(saved) : 10;
+  });
+
   useEffect(() => {
     localStorage.setItem('pikanditas_ingredients', JSON.stringify(ingredients));
   }, [ingredients]);
@@ -45,6 +50,10 @@ function CostCalculator() {
   useEffect(() => {
     localStorage.setItem('pikanditas_pricing', JSON.stringify(pricing));
   }, [pricing]);
+
+  useEffect(() => {
+    localStorage.setItem('pikanditas_projection_qty', projectionQty);
+  }, [projectionQty]);
 
   const handleIngredientChange = (id, field, value) => {
     setIngredients(prev => prev.map(ing => 
@@ -185,23 +194,33 @@ function CostCalculator() {
         {/* Section 4: Proyecciones */}
         <div className="card tilt-left-more" style={{ gridColumn: '1 / -1' }}>
           <h3 style={{ color: 'var(--primary)', marginBottom: '1rem' }}>4. Proyecciones (Costo de Armado Múltiple)</h3>
-          <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Costos de producción dinámicos para distintas cantidades de bolsas.</p>
-          <table className="cost-table">
-            <thead>
-              <tr>
-                <th>Cantidad</th>
-                <th>Costo Total de Producción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[1, 10, 12, 23].map(qty => (
-                <tr key={qty}>
-                  <td><strong>{qty} {qty === 1 ? 'Bolsa' : 'Bolsas'}</strong></td>
-                  <td>${(totalCostPerBag * qty).toFixed(2)} MXN</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Selecciona la cantidad de bolsas para ver el costo total de producción.</p>
+          
+          <div className="form-group" style={{ maxWidth: '400px', marginBottom: '1.5rem' }}>
+            <label>Cantidad de Bolsas:</label>
+            <select 
+              value={projectionQty} 
+              onChange={(e) => setProjectionQty(Number(e.target.value))}
+              style={{ padding: '0.4rem', borderRadius: '4px', border: '1px solid #ddd', width: '50%', fontFamily: 'var(--font-body)' }}
+            >
+              <option value={1}>1 Bolsa</option>
+              <option value={10}>10 Bolsas</option>
+              <option value={12}>12 Bolsas (Docena)</option>
+              <option value={20}>20 Bolsas</option>
+              <option value={23}>23 Bolsas (~1 Kilo)</option>
+              <option value={50}>50 Bolsas</option>
+              <option value={100}>100 Bolsas</option>
+            </select>
+          </div>
+
+          <div className="summary-box" style={{ background: 'var(--primary)', color: 'white' }}>
+            <p style={{ margin: 0, fontSize: '1.1rem' }}>
+              Costo de Producción por <strong>{projectionQty} {projectionQty === 1 ? 'Bolsa' : 'Bolsas'}</strong>: 
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'block', marginTop: '0.5rem' }}>
+                ${(totalCostPerBag * projectionQty).toFixed(2)} MXN
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
