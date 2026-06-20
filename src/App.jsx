@@ -144,8 +144,18 @@ function App() {
         <ul style={{ fontSize: '0.9rem' }}>
           <li className="neutral-check"><strong>Consumidores:</strong> Vende el antojo.</li>
           <li className="neutral-check"><strong>Estudiantes:</strong> Vende la oportunidad.</li>
-          <li className="neutral-check"><strong>Mayoreo (10+ piezas):</strong> Ideal para reventa rápida.</li>
-          <li className="neutral-check"><strong>Distribuidores (20+ piezas):</strong> Vende volumen.</li>
+          <li className="neutral-check">
+            <div>
+              <strong>Mayoreo:</strong> Ideal para reventa rápida.
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '0.1rem' }}>(10+ piezas)</div>
+            </div>
+          </li>
+          <li className="neutral-check">
+            <div>
+              <strong>Distribuidores:</strong> Vende volumen.
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-light)', marginTop: '0.1rem' }}>(20+ piezas)</div>
+            </div>
+          </li>
         </ul>
       </div>
 
@@ -188,6 +198,17 @@ function App() {
         </div>
       )}
 
+      {/* Footer */}
+      <footer style={{
+        textAlign: 'center', 
+        padding: '2rem 1rem 1rem', 
+        fontSize: '0.8rem', 
+        color: 'var(--primary)', 
+        opacity: 0.5,
+        marginTop: 'auto'
+      }}>
+        powered by Jonla Agencia
+      </footer>
     </div>
   );
 }
