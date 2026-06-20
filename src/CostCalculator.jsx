@@ -1,29 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 
 function CostCalculator() {
-  const [ingredients, setIngredients] = useState([
-    { id: 'tamarindo', name: 'Pulpa Tamarindo', weight: 250, cost: 33.75 },
-    { id: 'miguelito', name: 'Miguelito', weight: 150, cost: 48.00 },
-    { id: 'tajin', name: 'Tajín', weight: 150, cost: 45.75 },
-    { id: 'botanera', name: 'Salsa Botanera', weight: 250, cost: 10.42 },
-    { id: 'azucar', name: 'Azúcar', weight: 200, cost: 5.00 },
-    { id: 'chamoy', name: 'Chamoy Anita', weight: 250, cost: 5.00 },
-    { id: 'extras', name: 'Limón y extras', weight: 35, cost: 4.00 }
-  ]);
-
-  const [assembly, setAssembly] = useState({
-    gummyWeight: 42,
-    gummyCostPerKilo: 120,
-    sauceWeight: 11,
-    packageCost: 1.00
+  const [ingredients, setIngredients] = useState(() => {
+    const saved = localStorage.getItem('pikanditas_ingredients');
+    return saved ? JSON.parse(saved) : [
+      { id: 'tamarindo', name: 'Pulpa Tamarindo', weight: 250, cost: 33.75 },
+      { id: 'miguelito', name: 'Miguelito', weight: 150, cost: 48.00 },
+      { id: 'tajin', name: 'Tajín', weight: 150, cost: 45.75 },
+      { id: 'botanera', name: 'Salsa Botanera', weight: 250, cost: 10.42 },
+      { id: 'azucar', name: 'Azúcar', weight: 200, cost: 5.00 },
+      { id: 'chamoy', name: 'Chamoy Anita', weight: 250, cost: 5.00 },
+      { id: 'extras', name: 'Limón y extras', weight: 35, cost: 4.00 }
+    ];
   });
 
-  const [pricing, setPricing] = useState({
-    public: 20,
-    wholesale: 12,
-    distributor: 10
+  const [assembly, setAssembly] = useState(() => {
+    const saved = localStorage.getItem('pikanditas_assembly');
+    return saved ? JSON.parse(saved) : {
+      gummyWeight: 42,
+      gummyCostPerKilo: 120,
+      sauceWeight: 11,
+      packageCost: 1.00
+    };
   });
+
+  const [pricing, setPricing] = useState(() => {
+    const saved = localStorage.getItem('pikanditas_pricing');
+    return saved ? JSON.parse(saved) : {
+      public: 20,
+      wholesale: 12,
+      distributor: 10
+    };
+  });
+
+  useEffect(() => {
+    localStorage.setItem('pikanditas_ingredients', JSON.stringify(ingredients));
+  }, [ingredients]);
+
+  useEffect(() => {
+    localStorage.setItem('pikanditas_assembly', JSON.stringify(assembly));
+  }, [assembly]);
+
+  useEffect(() => {
+    localStorage.setItem('pikanditas_pricing', JSON.stringify(pricing));
+  }, [pricing]);
 
   const handleIngredientChange = (id, field, value) => {
     setIngredients(prev => prev.map(ing => 
