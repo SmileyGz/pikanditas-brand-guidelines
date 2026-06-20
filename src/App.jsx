@@ -162,6 +162,7 @@ function App() {
           <li className="neutral-check"><strong>Distribuidores:</strong> Vende volumen.</li>
         </ul>
       </div>
+        </div>
       )}
 
       {activeTab === 'costeo' && (
