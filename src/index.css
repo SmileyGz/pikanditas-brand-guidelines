@@ -283,3 +283,69 @@ li {
   color: var(--text-light);
   font-weight: 600;
 }
+
+/* Calculator Styles */
+.calculator-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.calculator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.ingredient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ingredient-header, .ingredient-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ingredient-header {
+  font-weight: bold;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.ingredient-row input, .form-group input, .cost-table input {
+  padding: 0.4rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  font-family: var(--font-body);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-group label {
+  font-weight: 500;
+  width: 60%;
+}
+
+.form-group input {
+  width: 35%;
+}
+
+.summary-box {
+  background: rgba(0,0,0,0.03);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}

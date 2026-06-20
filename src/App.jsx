@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './index.css';
+import CostCalculator from './CostCalculator';
 
 function App() {
   const [activeTab, setActiveTab] = useState('brand');
@@ -136,21 +137,6 @@ function App() {
         </div>
       </div>
 
-      {/* Core Product & Recipe */}
-      <div className="card tilt-right">
-        <h3>Producto Principal</h3>
-        <p>Gomitas de ositos cubiertas de chamoy con un perfil de sabor dulce, ácido y picosito.</p>
-        <h4 style={{ marginTop: '1rem' }}>Base de la Salsa Secreta</h4>
-        <ul style={{ fontSize: '0.9rem' }}>
-          <li className="neutral-check">Chamoy Anita (200g)</li>
-          <li className="neutral-check">Salsa Botanera (50g)</li>
-          <li className="neutral-check">Pulpa de tamarindo (100g)</li>
-          {/* INGREDIENTE SECRETO (Oculto en la vista, pero guardado en el Brand Brain): */}
-          {/* <li className="neutral-check">Tang de Fresa y Miguelito</li> */}
-          <li className="neutral-check">Azúcar glass, Sal, Jugo de limón</li>
-        </ul>
-      </div>
-
       {/* Strategy & Sales */}
       <div className="card tilt-left">
         <h3>Estrategia de Ventas</h3>
@@ -183,65 +169,7 @@ function App() {
               </form>
             </div>
           ) : (
-            <>
-              <div className="card tagline-card tilt-left">
-                <h2>Finanzas Pikanditas</h2>
-                <p>Costo base por bolsa: <strong>$7.34 MXN</strong></p>
-                <p>Método de costeo: Sub-receta (11g) + Gomitas (42g)</p>
-              </div>
-
-              <div className="card tilt-right" style={{ maxWidth: '600px', width: '100%' }}>
-                <h3 style={{color: 'var(--primary)', marginBottom: '1rem'}}>Estructura de Precios</h3>
-                <table className="cost-table">
-                  <thead>
-                    <tr>
-                      <th>Nivel</th>
-                      <th>Precio</th>
-                      <th>Utilidad</th>
-                      <th>Margen</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>Público</strong></td>
-                      <td>$20.00</td>
-                      <td style={{color: 'var(--primary)'}}><strong>$12.66</strong></td>
-                      <td>63.3%</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Mayoreo (10+)</strong></td>
-                      <td>$12.00</td>
-                      <td style={{color: 'var(--primary)'}}><strong>$4.66</strong></td>
-                      <td>38.8%</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Distribuidor (20+)</strong></td>
-                      <td>$10.00</td>
-                      <td style={{color: 'var(--primary)'}}><strong>$2.66</strong></td>
-                      <td>26.6%</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="card tilt-left-more" style={{ maxWidth: '600px', width: '100%' }}>
-                <h3 style={{color: 'var(--primary)', marginBottom: '1rem'}}>Costo de Armado (1 Bolsa)</h3>
-                <ul style={{ fontSize: '0.95rem', marginTop: '0' }}>
-                  <li className="neutral-check" style={{marginBottom: '0.5rem'}}>
-                    <div><strong>Gomitas (42g):</strong> $5.04 MXN</div>
-                  </li>
-                  <li className="neutral-check" style={{marginBottom: '0.5rem'}}>
-                    <div><strong>Preparación / Salsa (11g):</strong> $1.30 MXN</div>
-                  </li>
-                  <li className="neutral-check" style={{marginBottom: '0.5rem'}}>
-                    <div><strong>Bolsa Ziploc:</strong> $0.50 MXN</div>
-                  </li>
-                  <li className="neutral-check">
-                    <div><strong>Etiqueta:</strong> $0.50 MXN</div>
-                  </li>
-                </ul>
-              </div>
-            </>
+            <CostCalculator />
           )}
         </div>
       )}
