@@ -1,0 +1,285 @@
+:root {
+  --primary: #FF0055; /* Magenta Osito */
+  --secondary: #FF9900; /* Naranja Dulce */
+  --bg-board: #FFD6E0; /* Rosa Pastel */
+  --text-main: #2f3542;
+  --text-light: #747d8c;
+  --white: #ffffff;
+  
+  --gummy-red: #FF0000;
+  --gummy-orange: #FF7F00;
+  --gummy-yellow: #FFEA00;
+  --gummy-green: #00CC00;
+
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  --shadow-moodboard: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-board);
+  background-image: radial-gradient(#ff8ca3 2px, transparent 2px);
+  background-size: 30px 30px; /* Dot grid background */
+  font-family: var(--font-body);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 2rem;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
+/* Moodboard Container */
+.moodboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 2rem;
+}
+
+/* Base Card Style */
+.card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-moodboard);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  transition: transform 0.3s ease, z-index 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05) !important;
+  z-index: 100;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+/* Sticky Tape Effect */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 100px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+/* Rotations for the chaotic moodboard look */
+.tilt-left { transform: rotate(-2deg); }
+.tilt-right { transform: rotate(3deg); }
+.tilt-left-more { transform: rotate(-4deg); }
+.tilt-right-more { transform: rotate(5deg); }
+
+/* Typography Card */
+.typo-sample {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.font-outfit { font-family: var(--font-heading); font-weight: 800; }
+.font-inter { font-family: var(--font-body); font-weight: 400; }
+
+/* Color Swatches */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.swatch {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.swatch:hover {
+  transform: scale(1.2);
+}
+
+/* Brand Phrase / Tagline */
+.tagline-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  text-align: center;
+}
+
+.tagline-card::before {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.tagline-card h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Lists */
+ul {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+li {
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.yes-check::before { content: '✅'; }
+.no-check::before { content: '❌'; }
+.neutral-check::before { content: '✨'; }
+
+/* Logo Card */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Photo/Polaroid */
+.polaroid {
+  background: white;
+  padding: 1rem 1rem 3rem 1rem;
+  box-shadow: var(--shadow-moodboard);
+}
+
+.polaroid img {
+  width: 100%;
+  display: block;
+}
+
+.polaroid p {
+  text-align: center;
+  font-family: 'Indie Flower', cursive, sans-serif;
+  margin-top: 1rem;
+  color: var(--text-light);
+}
+
+/* Tabs & Costeo additions */
+.tabs-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.tab-btn {
+  background: var(--white);
+  border: 2px solid transparent;
+  padding: 0.8rem 2rem;
+  border-radius: 30px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-main);
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+
+.locked-card {
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.locked-card h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.password-input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 1.5rem 0 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: var(--font-body);
+}
+
+.password-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.unlock-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.unlock-btn:hover {
+  background: #d60047;
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.cost-table th, .cost-table td {
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.cost-table th {
+  color: var(--text-light);
+  font-weight: 600;
+}

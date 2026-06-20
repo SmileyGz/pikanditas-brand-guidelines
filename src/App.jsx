@@ -1,0 +1,252 @@
+import React, { useState } from 'react';
+import './index.css';
+
+function App() {
+  const [activeTab, setActiveTab] = useState('brand');
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [password, setPassword] = useState('');
+
+  const copyToClipboard = (hex) => {
+    navigator.clipboard.writeText(hex);
+    alert(`¡Copiado ${hex} al portapapeles!`);
+  };
+
+  const handleUnlock = (e) => {
+    e.preventDefault();
+    if (password === 'pika2026' || password === '1234') {
+      setIsUnlocked(true);
+    } else {
+      alert('Contraseña incorrecta');
+    }
+  };
+
+  return (
+    <div className="app-container">
+      <nav className="tabs-nav">
+        <button 
+          className={`tab-btn ${activeTab === 'brand' ? 'active' : ''}`}
+          onClick={() => setActiveTab('brand')}
+        >
+          Brand Guidelines
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === 'costeo' ? 'active' : ''}`}
+          onClick={() => setActiveTab('costeo')}
+        >
+          🔒 Costeo & Pricing
+        </button>
+      </nav>
+
+      {activeTab === 'brand' && (
+        <div className="moodboard">
+      
+      {/* Brand Logo / Tagline */}
+      <div className="card tagline-card tilt-left">
+        <h2>Pika la vida</h2>
+        <p>Dulce, picosito y delicioso. El antojo perfecto.</p>
+        <p>Hecho en Cancún.</p>
+      </div>
+
+      {/* Logo Card */}
+      <div className="card tilt-right polaroid">
+        <div className="logo-container">
+          <img src="/logo.png" alt="Logo de Pikanditas" onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = 'https://via.placeholder.com/400x400/FF0055/ffffff?text=Reemplazar+por+logo.png';
+          }} />
+        </div>
+        <p>Logo de Inspiración Oficial</p>
+      </div>
+
+      {/* Misión, Visión */}
+      <div className="card tilt-right" style={{ maxWidth: '400px' }}>
+        <h3 style={{color: 'var(--primary)', marginBottom: '0.5rem', fontSize: '1.5rem'}}>MISIÓN</h3>
+        <p style={{marginBottom: '1.5rem', fontSize: '0.95rem'}}>
+          Crear momentos felices y sabrosos llevando gomitas enchiladas irresistibles a cada rincón, con una imagen fresca, divertida y un sabor que hace sonreír.
+        </p>
+        
+        <h3 style={{color: 'var(--primary)', marginBottom: '0.5rem', fontSize: '1.5rem'}}>VISIÓN</h3>
+        <p style={{marginBottom: '0', fontSize: '0.95rem'}}>
+          Ser la marca de gomitas enchiladas favorita en México, reconocida por su sabor único, su personalidad vibrante y su compromiso con la cercanía, el sabor y la calidad.
+        </p>
+      </div>
+
+      {/* Valores */}
+      <div className="card tilt-left-more" style={{ maxWidth: '450px' }}>
+        <h3 style={{color: 'var(--primary)', marginBottom: '1rem', fontSize: '1.5rem'}}>VALORES</h3>
+        <ul style={{ fontSize: '0.95rem', marginTop: '0' }}>
+          <li className="neutral-check" style={{marginBottom: '1rem'}}>
+            <div><strong>Alegría:</strong> <br/>Cada bolsita lleva sabor y sonrisa.</div>
+          </li>
+          <li className="neutral-check" style={{marginBottom: '1rem'}}>
+            <div><strong>Cercanía:</strong> <br/>Estamos en la tiendita, en la calle, contigo.</div>
+          </li>
+          <li className="neutral-check" style={{marginBottom: '1rem'}}>
+            <div><strong>Pasión por lo que pica rico:</strong> <br/>Sabemos lo que nos gusta y lo hacemos bien.</div>
+          </li>
+          <li className="neutral-check">
+            <div><strong>Creatividad:</strong> <br/>Desde la etiqueta hasta el sabor, todo tiene nuestro toque único.</div>
+          </li>
+        </ul>
+      </div>
+
+      {/* Colors */}
+      <div className="card tilt-left">
+        <h3>Colores de la Marca</h3>
+        <p style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>Inspiración visual - Haz clic para copiar HEX</p>
+        <div className="swatches">
+          <div className="swatch" style={{ backgroundColor: '#FF0055' }} onClick={() => copyToClipboard('#FF0055')} title="Magenta Osito"></div>
+          <div className="swatch" style={{ backgroundColor: '#7ED321' }} onClick={() => copyToClipboard('#7ED321')} title="Verde Letras"></div>
+          <div className="swatch" style={{ backgroundColor: '#FF9900' }} onClick={() => copyToClipboard('#FF9900')} title="Naranja Dulce"></div>
+          <div className="swatch" style={{ backgroundColor: '#FF0000' }} onClick={() => copyToClipboard('#FF0000')} title="Rojo Chile"></div>
+          <div className="swatch" style={{ backgroundColor: '#FFD6E0' }} onClick={() => copyToClipboard('#FFD6E0')} title="Rosa Pastel Fondo"></div>
+          <div className="swatch" style={{ backgroundColor: '#2f3542' }} onClick={() => copyToClipboard('#2f3542')} title="Texto Oscuro"></div>
+        </div>
+        
+        <h3 style={{ marginTop: '1.5rem' }}>Colores de las Gomitas</h3>
+        <div className="swatches">
+          <div className="swatch" style={{ backgroundColor: '#FF0000' }} onClick={() => copyToClipboard('#FF0000')} title="Rojo Intenso"></div>
+          <div className="swatch" style={{ backgroundColor: '#FF7F00' }} onClick={() => copyToClipboard('#FF7F00')} title="Naranja Brillante"></div>
+          <div className="swatch" style={{ backgroundColor: '#FFEA00' }} onClick={() => copyToClipboard('#FFEA00')} title="Amarillo Vivo"></div>
+          <div className="swatch" style={{ backgroundColor: '#00CC00' }} onClick={() => copyToClipboard('#00CC00')} title="Verde Fuerte"></div>
+        </div>
+      </div>
+
+      {/* Archetype & Tone */}
+      <div className="card tilt-right">
+        <h3>Personalidad</h3>
+        <ul>
+          <li className="neutral-check"><strong>Arquetipo:</strong> El Bufón (Principal), El Creador (Secundario)</li>
+          <li className="neutral-check"><strong>Tono:</strong> Divertido, Juguetón, Amigable</li>
+          <li className="neutral-check"><strong>Vibra:</strong> Local, Juvenil, Ligeramente travieso</li>
+          <li className="no-check">Nunca agresivo, nunca vulgar</li>
+        </ul>
+      </div>
+
+      {/* Typography */}
+      <div className="card tilt-left-more">
+        <h3>Tipografía</h3>
+        <div style={{ marginTop: '1rem' }}>
+          <div className="typo-sample font-outfit">Outfit</div>
+          <p className="font-outfit">Fuente Principal para Títulos (Pesos: 400, 600, 800)</p>
+        </div>
+        <div style={{ marginTop: '2rem' }}>
+          <div className="typo-sample font-inter">Inter</div>
+          <p className="font-inter">Fuente para Texto (Pesos: 400, 500, 700)</p>
+        </div>
+      </div>
+
+      {/* Core Product & Recipe */}
+      <div className="card tilt-right">
+        <h3>Producto Principal</h3>
+        <p>Gomitas de ositos cubiertas de chamoy con un perfil de sabor dulce, ácido y picosito.</p>
+        <h4 style={{ marginTop: '1rem' }}>Base de la Salsa Secreta</h4>
+        <ul style={{ fontSize: '0.9rem' }}>
+          <li className="neutral-check">Chamoy Anita (200g)</li>
+          <li className="neutral-check">Salsa Botanera (50g)</li>
+          <li className="neutral-check">Pulpa de tamarindo (100g)</li>
+          {/* INGREDIENTE SECRETO (Oculto en la vista, pero guardado en el Brand Brain): */}
+          {/* <li className="neutral-check">Tang de Fresa y Miguelito</li> */}
+          <li className="neutral-check">Azúcar glass, Sal, Jugo de limón</li>
+        </ul>
+      </div>
+
+      {/* Strategy & Sales */}
+      <div className="card tilt-left">
+        <h3>Estrategia de Ventas</h3>
+        <h2 style={{ color: 'var(--primary)', marginTop: '0.5rem', marginBottom: '1rem' }}>"Vende rotación. No dulces."</h2>
+        <ul style={{ fontSize: '0.9rem' }}>
+          <li className="neutral-check"><strong>Consumidores:</strong> Vende el antojo.</li>
+          <li className="neutral-check"><strong>Estudiantes:</strong> Vende la oportunidad.</li>
+          <li className="neutral-check"><strong>Tienditas:</strong> Vende rotación.</li>
+          <li className="neutral-check"><strong>Distribuidores:</strong> Vende volumen.</li>
+        </ul>
+      </div>
+      )}
+
+      {activeTab === 'costeo' && (
+        <div className="moodboard costeo-tab">
+          {!isUnlocked ? (
+            <div className="card locked-card">
+              <h3>🔒 Acceso Restringido</h3>
+              <p>Esta sección contiene información confidencial de costos y márgenes de Pikanditas.</p>
+              <form onSubmit={handleUnlock}>
+                <input 
+                  type="password" 
+                  placeholder="Contraseña..." 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="password-input"
+                />
+                <button type="submit" className="unlock-btn">Desbloquear</button>
+              </form>
+            </div>
+          ) : (
+            <>
+              <div className="card tagline-card tilt-left">
+                <h2>Finanzas Pikanditas</h2>
+                <p>Costo base por bolsa: <strong>$7.34 MXN</strong></p>
+                <p>Método de costeo: Sub-receta (11g) + Gomitas (42g)</p>
+              </div>
+
+              <div className="card tilt-right" style={{ maxWidth: '600px', width: '100%' }}>
+                <h3 style={{color: 'var(--primary)', marginBottom: '1rem'}}>Estructura de Precios</h3>
+                <table className="cost-table">
+                  <thead>
+                    <tr>
+                      <th>Nivel</th>
+                      <th>Precio</th>
+                      <th>Utilidad</th>
+                      <th>Margen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Público</strong></td>
+                      <td>$20.00</td>
+                      <td style={{color: 'var(--primary)'}}><strong>$12.66</strong></td>
+                      <td>63.3%</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Mayoreo (10+)</strong></td>
+                      <td>$12.00</td>
+                      <td style={{color: 'var(--primary)'}}><strong>$4.66</strong></td>
+                      <td>38.8%</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Distribuidor (20+)</strong></td>
+                      <td>$10.00</td>
+                      <td style={{color: 'var(--primary)'}}><strong>$2.66</strong></td>
+                      <td>26.6%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="card tilt-left-more" style={{ maxWidth: '600px', width: '100%' }}>
+                <h3 style={{color: 'var(--primary)', marginBottom: '1rem'}}>Costo de Armado (1 Bolsa)</h3>
+                <ul style={{ fontSize: '0.95rem', marginTop: '0' }}>
+                  <li className="neutral-check" style={{marginBottom: '0.5rem'}}>
+                    <div><strong>Gomitas (42g):</strong> $5.04 MXN</div>
+                  </li>
+                  <li className="neutral-check" style={{marginBottom: '0.5rem'}}>
+                    <div><strong>Preparación / Salsa (11g):</strong> $1.30 MXN</div>
+                  </li>
+                  <li className="neutral-check" style={{marginBottom: '0.5rem'}}>
+                    <div><strong>Bolsa Ziploc:</strong> $0.50 MXN</div>
+                  </li>
+                  <li className="neutral-check">
+                    <div><strong>Etiqueta:</strong> $0.50 MXN</div>
+                  </li>
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+export default App;
