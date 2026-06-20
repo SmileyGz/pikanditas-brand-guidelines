@@ -85,9 +85,24 @@ function App() {
           <li className="neutral-check" style={{marginBottom: '1rem'}}>
             <div><strong>Pasión por lo que pica rico:</strong> <br/>Sabemos lo que nos gusta y lo hacemos bien.</div>
           </li>
-          <li className="neutral-check">
+          <li className="neutral-check" style={{marginBottom: '1rem'}}>
             <div><strong>Creatividad:</strong> <br/>Desde la etiqueta hasta el sabor, todo tiene nuestro toque único.</div>
           </li>
+          <li className="neutral-check">
+            <div><strong>Responsabilidad:</strong> <br/>Buscamos crecer cuidando nuestro entorno y relaciones.</div>
+          </li>
+        </ul>
+      </div>
+
+      {/* Atributos Clave */}
+      <div className="card tilt-right tagline-card">
+        <h3 style={{ marginBottom: '1rem' }}>¿Por qué Pikanditas?</h3>
+        <ul style={{ fontSize: '0.9rem', textAlign: 'left', listStyle: 'none', padding: 0 }}>
+          <li style={{marginBottom: '0.8rem'}}>🍓 <strong>Sabor inconfundible:</strong> un picante dulce al estilo Mexicano que emociona.</li>
+          <li style={{marginBottom: '0.8rem'}}>🧸 <strong>Branding tierno y atrevido:</strong> nuestro oso picosito conquista a primera vista.</li>
+          <li style={{marginBottom: '0.8rem'}}>👜 <strong>Presentación práctica y coqueta:</strong> ideal para tiendas, antojos y compartir.</li>
+          <li style={{marginBottom: '0.8rem'}}>♻️ <strong>En camino a lo eco-amigable:</strong> empaques pequeños, menos desperdicio.</li>
+          <li>🤝 <strong>Con alma de comunidad:</strong> vendemos con trato directo, cálido y constante.</li>
         </ul>
       </div>
 
