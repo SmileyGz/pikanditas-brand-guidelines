@@ -39,7 +39,7 @@ function App() {
       </nav>
 
       {activeTab === 'brand' && (
-        <div className="moodboard">
+        <div className="moodboard brand-tab">
       
       {/* Brand Logo / Tagline */}
       <div className="card tagline-card tilt-left">
@@ -98,11 +98,11 @@ function App() {
       <div className="card tilt-right tagline-card">
         <h3 style={{ marginBottom: '1rem' }}>¿Por qué Pikanditas?</h3>
         <ul style={{ fontSize: '0.9rem', textAlign: 'left', listStyle: 'none', padding: 0 }}>
-          <li style={{marginBottom: '0.8rem'}}>🍓 <strong>Sabor inconfundible:</strong> un picante dulce al estilo Mexicano que emociona.</li>
-          <li style={{marginBottom: '0.8rem'}}>🧸 <strong>Branding tierno y atrevido:</strong> nuestro oso picosito conquista a primera vista.</li>
-          <li style={{marginBottom: '0.8rem'}}>👜 <strong>Presentación práctica y coqueta:</strong> ideal para tiendas, antojos y compartir.</li>
-          <li style={{marginBottom: '0.8rem'}}>♻️ <strong>En camino a lo eco-amigable:</strong> empaques pequeños, menos desperdicio.</li>
-          <li>🤝 <strong>Con alma de comunidad:</strong> vendemos con trato directo, cálido y constante.</li>
+          <li style={{marginBottom: '0.8rem'}}><span>🍓</span> <span><strong>Sabor inconfundible:</strong> un picante dulce al estilo Mexicano que emociona.</span></li>
+          <li style={{marginBottom: '0.8rem'}}><span>🧸</span> <span><strong>Branding tierno y atrevido:</strong> nuestro oso picosito conquista a primera vista.</span></li>
+          <li style={{marginBottom: '0.8rem'}}><span>👜</span> <span><strong>Presentación práctica y coqueta:</strong> ideal para tiendas, antojos y compartir.</span></li>
+          <li style={{marginBottom: '0.8rem'}}><span>♻️</span> <span><strong>En camino a lo eco-amigable:</strong> empaques pequeños, menos desperdicio.</span></li>
+          <li><span>🤝</span> <span><strong>Con alma de comunidad:</strong> vendemos con trato directo, cálido y constante.</span></li>
         </ul>
       </div>
 
@@ -132,10 +132,10 @@ function App() {
       <div className="card tilt-right">
         <h3>Personalidad</h3>
         <ul>
-          <li className="neutral-check"><strong>Arquetipo:</strong> El Bufón (Principal), El Creador (Secundario)</li>
-          <li className="neutral-check"><strong>Tono:</strong> Divertido, Juguetón, Amigable</li>
-          <li className="neutral-check"><strong>Vibra:</strong> Local, Juvenil, Ligeramente travieso</li>
-          <li className="no-check">Nunca agresivo, nunca vulgar</li>
+          <li className="neutral-check"><span><strong>Arquetipo:</strong> El Bufón (Principal), El Creador (Secundario)</span></li>
+          <li className="neutral-check"><span><strong>Tono:</strong> Divertido, Juguetón, Amigable</span></li>
+          <li className="neutral-check"><span><strong>Vibra:</strong> Local, Juvenil, Ligeramente travieso</span></li>
+          <li className="no-check"><span>Nunca agresivo, nunca vulgar</span></li>
         </ul>
       </div>
 
@@ -157,8 +157,8 @@ function App() {
         <h3>Estrategia de Ventas</h3>
         <h2 style={{ color: 'var(--primary)', marginTop: '0.5rem', marginBottom: '1rem' }}>"Vende rotación. No dulces."</h2>
         <ul style={{ fontSize: '0.9rem' }}>
-          <li className="neutral-check"><strong>Consumidores:</strong> Vende el antojo.</li>
-          <li className="neutral-check"><strong>Estudiantes:</strong> Vende la oportunidad.</li>
+          <li className="neutral-check"><span><strong>Consumidores:</strong> Vende el antojo.</span></li>
+          <li className="neutral-check"><span><strong>Estudiantes:</strong> Vende la oportunidad.</span></li>
           <li className="neutral-check">
             <div>
               <strong>Mayoreo:</strong> Ideal para reventa rápida.
@@ -181,10 +181,10 @@ function App() {
           "Empieza con poco, gana rápido y diviértete vendiendo Pikanditas."
         </p>
         <ul style={{ fontSize: '0.9rem', textAlign: 'left' }}>
-          <li className="yes-check">Baja inversión inicial</li>
-          <li className="yes-check">Alta rotación (se venden en minutos)</li>
-          <li className="yes-check">Excelente margen de ganancia</li>
-          <li className="yes-check">Imagen profesional y respaldo comprobado</li>
+          <li className="yes-check"><span>Baja inversión inicial</span></li>
+          <li className="yes-check"><span>Alta rotación (se venden en minutos)</span></li>
+          <li className="yes-check"><span>Excelente margen de ganancia</span></li>
+          <li className="yes-check"><span>Imagen profesional y respaldo comprobado</span></li>
         </ul>
       </div>
         </div>
