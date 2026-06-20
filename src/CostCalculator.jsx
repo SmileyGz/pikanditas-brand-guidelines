@@ -161,27 +161,6 @@ function CostCalculator() {
           </table>
         </div>
 
-        {/* Section 4: Projections */}
-        <div className="card tilt-left-more" style={{ gridColumn: '1 / -1', maxWidth: 'none' }}>
-          <h3 style={{ color: 'var(--primary)', marginBottom: '1rem' }}>4. Proyecciones (Costo de Armado Múltiple)</h3>
-          <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Costos de producción para distintas cantidades de bolsas. Solo multiplicamos tu costo unitario (${totalCostPerBag.toFixed(2)}).</p>
-          <table className="cost-table">
-            <thead>
-              <tr>
-                <th>Cantidad</th>
-                <th>Costo Total de Producción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[1, 10, 12, 23].map(qty => (
-                <tr key={qty}>
-                  <td><strong>{qty} {qty === 1 ? 'Bolsa' : 'Bolsas'}</strong></td>
-                  <td>${(totalCostPerBag * qty).toFixed(2)} MXN</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
   );
