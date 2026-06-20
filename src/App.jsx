@@ -60,7 +60,7 @@ function App() {
       </div>
 
       {/* Misión, Visión */}
-      <div className="card tilt-right" style={{ maxWidth: '400px' }}>
+      <div className="card tilt-right">
         <h3 style={{color: 'var(--primary)', marginBottom: '0.5rem', fontSize: '1.5rem'}}>MISIÓN</h3>
         <p style={{marginBottom: '1.5rem', fontSize: '0.95rem'}}>
           Crear momentos felices y sabrosos llevando gomitas enchiladas irresistibles a cada rincón, con una imagen fresca, divertida y un sabor que hace sonreír.
@@ -144,8 +144,22 @@ function App() {
         <ul style={{ fontSize: '0.9rem' }}>
           <li className="neutral-check"><strong>Consumidores:</strong> Vende el antojo.</li>
           <li className="neutral-check"><strong>Estudiantes:</strong> Vende la oportunidad.</li>
-          <li className="neutral-check"><strong>Tienditas:</strong> Vende rotación.</li>
-          <li className="neutral-check"><strong>Distribuidores:</strong> Vende volumen.</li>
+          <li className="neutral-check"><strong>Mayoreo (10+ piezas):</strong> Ideal para reventa rápida.</li>
+          <li className="neutral-check"><strong>Distribuidores (20+ piezas):</strong> Vende volumen.</li>
+        </ul>
+      </div>
+
+      {/* Oportunidad de Negocio */}
+      <div className="card tilt-right-more tagline-card">
+        <h3 style={{ marginBottom: '1rem' }}>Oportunidad de Negocio</h3>
+        <p style={{ fontSize: '1.1rem', marginBottom: '1rem', fontStyle: 'italic' }}>
+          "Empieza con poco, gana rápido y diviértete vendiendo Pikanditas."
+        </p>
+        <ul style={{ fontSize: '0.9rem', textAlign: 'left' }}>
+          <li className="yes-check">Baja inversión inicial</li>
+          <li className="yes-check">Alta rotación (se venden en minutos)</li>
+          <li className="yes-check">Excelente margen de ganancia</li>
+          <li className="yes-check">Imagen profesional y respaldo comprobado</li>
         </ul>
       </div>
         </div>

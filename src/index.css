@@ -289,6 +289,12 @@ li {
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.calculator-container .card {
+  max-width: none;
 }
 
 .calculator-grid {

@@ -53,7 +53,7 @@ function CostCalculator() {
 
   return (
     <div className="calculator-container">
-      <div className="card tagline-card tilt-left" style={{ width: '100%', maxWidth: '800px', margin: '0 auto 2rem' }}>
+      <div className="card tagline-card tilt-left" style={{ width: '100%', margin: '0 auto 2rem' }}>
         <h2>Calculadora Dinámica de Costos</h2>
         <p>Ajusta las cantidades y precios para ver tu rentabilidad en tiempo real.</p>
         <div style={{ marginTop: '1rem', fontSize: '1.2rem' }}>
@@ -127,7 +127,7 @@ function CostCalculator() {
         </div>
 
         {/* Section 3: Prices and Margins */}
-        <div className="card tilt-right" style={{ gridColumn: '1 / -1', maxWidth: 'none' }}>
+        <div className="card tilt-right" style={{ gridColumn: '1 / -1' }}>
           <h3 style={{ color: 'var(--primary)', marginBottom: '1rem' }}>3. Estructura de Precios</h3>
           <table className="cost-table">
             <thead>
@@ -161,6 +161,27 @@ function CostCalculator() {
           </table>
         </div>
 
+        {/* Section 4: Proyecciones */}
+        <div className="card tilt-left-more" style={{ gridColumn: '1 / -1' }}>
+          <h3 style={{ color: 'var(--primary)', marginBottom: '1rem' }}>4. Proyecciones (Costo de Armado Múltiple)</h3>
+          <p style={{ fontSize: '0.9rem', marginBottom: '1rem' }}>Costos de producción dinámicos para distintas cantidades de bolsas.</p>
+          <table className="cost-table">
+            <thead>
+              <tr>
+                <th>Cantidad</th>
+                <th>Costo Total de Producción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[1, 10, 12, 23].map(qty => (
+                <tr key={qty}>
+                  <td><strong>{qty} {qty === 1 ? 'Bolsa' : 'Bolsas'}</strong></td>
+                  <td>${(totalCostPerBag * qty).toFixed(2)} MXN</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
