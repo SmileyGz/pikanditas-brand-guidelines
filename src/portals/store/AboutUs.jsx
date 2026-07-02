@@ -25,8 +25,8 @@ export default function AboutUs() {
     es: {
       title: '¡Pika la vida!',
       subtitle: 'Nuestra Historia',
-      paragraph1: 'Pikanditas nació en Cancún 🌴 de un simple antojo: encontrar el balance perfecto entre lo dulce de las gomitas, lo picosito de un buen chilito, y lo acidito del chamoy artesanal. Nos dimos cuenta que las gomitas enchiladas comerciales sabían artificiales, así que decidimos hacer las nuestras a mano.',
-      paragraph2: 'Hoy somos la marca de gomitas más traviesa y divertida 🐻. No solo vendemos dulces, ¡vendemos felicidad y el antojo perfecto! Nuestro Osito Magenta representa la alegría de compartir un momento delicioso (o guardártelas todas para ti, no juzgamos).',
+      paragraph1: 'Pikanditas nació en Cancún 🌴 de un recuerdo y puro antojo: encontrar el balance perfecto entre lo dulce de las gomitas, lo picosito de un buen chilito, y lo frutal del chamoy artesanal. Nos dimos cuenta que las gomitas enchiladas comerciales sabían artificiales y duran muy poco, así que decidimos hacer las nuestras a mano.',
+      paragraph2: 'Hoy somos la marca de gomitas más traviesa y divertida 🐻. No solo vendemos dulces, ¡vendemos felicidad y el antojo perfecto! Nuestro Osito representa la alegría de compartir un momento delicioso (o guardártelas todas solo para ti, no juzgamos).',
       vibeTitle: 'El Secreto Pikanditas',
       vibeItems: [
         { icon: '🌶️', title: 'Chile de Calidad', desc: 'Mezcla secreta que pica rico, pero no quema.' },
@@ -38,8 +38,8 @@ export default function AboutUs() {
     en: {
       title: 'Spice up your life!',
       subtitle: 'Our Story',
-      paragraph1: 'Pikanditas was born in Cancún 🌴 out of a simple craving: finding the perfect balance between sweet gummies, spicy chili, and sour artisanal chamoy. We realized commercial spicy gummies tasted artificial, so we decided to handcraft our own.',
-      paragraph2: 'Today we are the most playful and fun gummy brand 🐻. We don\'t just sell candy, we sell happiness and the perfect craving! Our Magenta Bear represents the joy of sharing a delicious moment (or keeping them all to yourself, we don\'t judge).',
+      paragraph1: 'Pikanditas was born in Cancún 🌴 out of a memory and pure craving: finding the perfect balance between sweet gummies, spicy chili, and fruity artisanal chamoy. We realized commercial spicy gummies tasted artificial and didn\'t last long, so we decided to handcraft our own.',
+      paragraph2: 'Today we are the most playful and fun gummy brand 🐻. We don\'t just sell candy, we sell happiness and the perfect craving! Our Bear represents the joy of sharing a delicious moment (or keeping them all just for yourself, we don\'t judge).',
       vibeTitle: 'The Pikanditas Secret',
       vibeItems: [
         { icon: '🌶️', title: 'Quality Chili', desc: 'A secret blend that has a rich kick, but doesn\'t burn.' },
