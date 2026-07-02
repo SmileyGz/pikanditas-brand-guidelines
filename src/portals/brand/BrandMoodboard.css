@@ -79,6 +79,8 @@
   max-width: 400px;
   position: relative;
   transition: transform 0.3s ease, z-index 0.3s ease, box-shadow 0.3s ease;
+  transform: translateZ(0); /* Fix for column break absolute positioning bug */
+  contain: paint layout;
 }
 
 .moodboard.brand-tab .card {
@@ -114,10 +116,10 @@
 }
 
 /* Rotations for the chaotic moodboard look */
-.tilt-left { transform: rotate(-2deg); }
-.tilt-right { transform: rotate(3deg); }
-.tilt-left-more { transform: rotate(-4deg); }
-.tilt-right-more { transform: rotate(5deg); }
+.tilt-left { transform: rotate(-2deg) translateZ(0); }
+.tilt-right { transform: rotate(3deg) translateZ(0); }
+.tilt-left-more { transform: rotate(-4deg) translateZ(0); }
+.tilt-right-more { transform: rotate(5deg) translateZ(0); }
 
 /* Typography Card */
 .typo-sample {
