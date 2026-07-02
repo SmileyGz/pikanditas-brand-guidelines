@@ -1,0 +1,89 @@
+/* ============================================================
+   PIKANDITAS — Design Tokens
+   Global CSS Custom Properties for all three portals
+   ============================================================ */
+
+:root {
+  /* ── Brand Colors ── */
+  --color-primary:         #FF0055;  /* Magenta Osito — primary CTAs */
+  --color-secondary:       #FF9900;  /* Naranja Dulce — secondary actions */
+  --color-success:         #00CC00;  /* Verde — in stock, success */
+  --color-danger:          #FF0000;  /* Rojo Chile — panic, danger */
+  --color-warning:         #FFEA00;  /* Amarillo — warnings, promos */
+  --color-gummy-orange:    #FF7F00;
+  --color-gummy-green:     #7ED321;
+
+  /* ── Portal Backgrounds ── */
+  --color-bg-consumer:     #FFD6E0;  /* Consumer store — pink pastel */
+  --color-bg-seller:       #FFF8F0;  /* Seller portal — warm off-white */
+  --color-bg-admin:        #F4F6F9;  /* Admin — clean neutral */
+
+  /* ── Surface & Text ── */
+  --color-surface:         #FFFFFF;
+  --color-border:          #E8EAED;
+  --color-text-primary:    #2f3542;
+  --color-text-muted:      #747d8c;
+
+  /* ── Shadows ── */
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg:    0 12px 40px rgba(0,0,0,0.14);
+  --shadow-brand: 0 8px 24px rgba(255,0,85,0.25);
+  --shadow-panic: 0 8px 30px rgba(255,0,0,0.40);
+
+  /* ── Radii ── */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-xl:   32px;
+  --radius-pill: 9999px;
+  --radius-card: 16px;
+
+  /* ── Glassmorphism ── */
+  --glass-bg:          rgba(255, 255, 255, 0.1);
+  --glass-border:      rgba(255, 255, 255, 0.2);
+  --glass-shadow:      0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --glass-blur:        blur(12px);
+  --glass-bg-dark:     rgba(0, 0, 0, 0.6);
+  --glass-border-dark: rgba(255, 255, 255, 0.1);
+
+  /* ── Spacing (8pt scale) ── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ── Typography ── */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  --text-display: clamp(2.5rem, 6vw, 4.5rem);
+  --text-h1:      clamp(2rem, 4vw, 3rem);
+  --text-h2:      clamp(1.5rem, 3vw, 2rem);
+  --text-h3:      1.25rem;
+  --text-h4:      1rem;
+  --text-body-lg: 1.125rem;
+  --text-body:    1rem;
+  --text-body-sm: 0.875rem;
+  --text-label:   0.75rem;
+  --text-price:   1.5rem;
+
+  /* ── Transitions ── */
+  --transition-fast:   150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow:   400ms ease;
+
+  /* ── Z-index layers ── */
+  --z-base:    0;
+  --z-float:   10;
+  --z-overlay: 100;
+  --z-modal:   200;
+  --z-toast:   300;
+}

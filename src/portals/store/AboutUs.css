@@ -1,0 +1,194 @@
+/* AboutUs.css */
+.about-root {
+  min-height: 100vh;
+  background: var(--color-bg-consumer);
+  padding-top: 110px;
+  padding-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+
+.floating-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.floating-emoji {
+  position: absolute;
+  bottom: -50px;
+  opacity: 0.15;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
+  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  position: relative;
+  z-index: 1;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.about-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 8vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.about-subtitle {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: var(--color-text-primary);
+  opacity: 0.9;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+.about-text-panel {
+  padding: 3rem;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.4) !important;
+  border: 2px dashed rgba(255, 0, 85, 0.2);
+  box-shadow: 0 20px 40px rgba(255, 0, 85, 0.05);
+  animation: slideRight 0.8s ease-out forwards;
+}
+
+.about-paragraph {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.about-vibe-box {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.about-vibe-box h3 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+}
+
+.vibe-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.vibe-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.vibe-icon {
+  font-size: 1.5rem;
+  background: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.about-image-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  animation: slideLeft 0.8s ease-out forwards;
+}
+
+.image-glow {
+  position: absolute;
+  inset: 5%;
+  background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+  filter: blur(40px);
+  opacity: 0.3;
+  z-index: -1;
+  animation: pulse 4s infinite alternate;
+}
+
+.about-product-img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 30px;
+  box-shadow: 0 30px 60px rgba(255, 0, 85, 0.15), 
+              0 0 0 10px rgba(255, 255, 255, 0.8);
+  transform: rotate(2deg);
+  transition: transform 0.3s ease;
+}
+
+.about-product-img:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.btn-jiggle {
+  animation: jiggleButton 3s infinite;
+}
+
+@keyframes jiggleButton {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  92% { transform: rotate(3deg); }
+  94% { transform: rotate(-3deg); }
+  96% { transform: rotate(3deg); }
+  98% { transform: rotate(-3deg); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  from { opacity: 0.2; transform: scale(0.95); }
+  to { opacity: 0.4; transform: scale(1.05); }
+}

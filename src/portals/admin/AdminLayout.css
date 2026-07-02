@@ -1,0 +1,68 @@
+/* Admin Layout additional styles */
+.admin-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+.sidebar-logo-img {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(255,0,85,0.08);
+  padding: 2px;
+  object-fit: contain;
+}
+.sidebar-close-btn { display: none; margin-left: auto; font-size: 1.1rem; color: var(--color-text-muted); }
+
+.sidebar-user { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; }
+.sidebar-user-avatar { font-size: 1.5rem; }
+.sidebar-user-info { display: flex; flex-direction: column; }
+.sidebar-user-name { font-weight: 700; font-size: 0.85rem; color: var(--color-text-primary); }
+.sidebar-user-role { font-size: var(--text-label); color: var(--color-text-muted); }
+.sidebar-signout { color: var(--color-text-muted) !important; font-size: var(--text-body-sm) !important; margin-top: var(--space-2); }
+
+/* Topbar */
+.topbar-hamburger { display: none; font-size: 1.4rem; color: var(--color-text-primary); padding: var(--space-2); }
+.topbar-brand { display: flex; align-items: center; gap: var(--space-3); font-family: var(--font-heading); font-weight: 800; color: var(--color-primary); }
+.topbar-logo { width: 28px; height: 28px; object-fit: contain; border-radius: 6px; }
+.topbar-spacer { flex: 1; }
+.topbar-panic-indicator { width: 10px; height: 10px; border-radius: 50%; background: transparent; }
+.topbar-panic-indicator.active { background: var(--color-danger); animation: badge-pulse 1s infinite; }
+
+/* Mobile sidebar */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    display: flex;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: var(--z-modal);
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+    width: 260px;
+  }
+  .admin-sidebar.mobile-open { transform: translateX(0); }
+  .sidebar-close-btn { display: block; }
+  .sidebar-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: calc(var(--z-modal) - 1);
+  }
+  .topbar-hamburger { display: block; }
+  .topbar-brand { font-size: 0.9rem; }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #receipt-ticket, #receipt-ticket * {
+    visibility: visible;
+  }
+  #receipt-ticket {
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-shadow: none !important;
+  }
+}
