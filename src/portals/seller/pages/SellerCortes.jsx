@@ -140,13 +140,17 @@ export default function SellerCortes() {
   }
 
   return (
-    <div style={{ padding: 'var(--space-5)' }}>
-      <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', fontWeight: 800, marginBottom: 'var(--space-2)' }}>
-        📋 Sistema de Cortes
-      </h1>
-      <p style={{ color: 'var(--color-neutral-600)', marginBottom: 'var(--space-5)' }}>
-        Realiza el inventario físico, cobra las ventas y resurte la tienda.
-      </p>
+    <div style={{ padding: 0, minHeight: '100vh', background: '#f8fafc' }}>
+      <div style={{ background: '#4f46e5', color: 'white', padding: 'var(--space-6) var(--space-5)', paddingBottom: '3rem', borderBottomLeftRadius: '2rem', borderBottomRightRadius: '2rem' }}>
+        <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 900, margin: 0 }}>
+          📋 Corte de Ruta
+        </h1>
+        <p style={{ margin: '0.5rem 0 0 0', opacity: 0.9, fontSize: '1rem' }}>
+          Realiza inventario físico, cobra ventas y resurte tus tienditas.
+        </p>
+      </div>
+
+      <div style={{ padding: '0 var(--space-5)', marginTop: '-2rem', position: 'relative', zIndex: 10 }}>
 
       {error && <div className="alert alert-error">{error}</div>}
 
@@ -280,6 +284,7 @@ export default function SellerCortes() {
         </div>
       )}
 
+      </div>
     </div>
   )
 }

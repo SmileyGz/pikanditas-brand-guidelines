@@ -74,9 +74,18 @@ export default function SellerPurchases() {
   }
 
   return (
-    <div style={{padding:'var(--space-5)'}} className="animate-float-in">
-      <h1 style={{fontFamily:'var(--font-heading)',fontSize:'1.4rem',fontWeight:800,marginBottom:'var(--space-2)'}}>📦 Resurtido CEDIS</h1>
-      <p style={{color:'var(--color-text-muted)',marginBottom:'var(--space-6)'}}>Pide mercancía al almacén central para tu ruta.</p>
+  return (
+    <div style={{ padding: 0, minHeight: '100vh', background: '#fffbeb' }}>
+      <div style={{ background: '#ea580c', color: 'white', padding: 'var(--space-6) var(--space-5)', paddingBottom: '3rem', borderBottomLeftRadius: '2rem', borderBottomRightRadius: '2rem' }}>
+        <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 900, margin: 0 }}>
+          📦 Resurtido CEDIS
+        </h1>
+        <p style={{ margin: '0.5rem 0 0 0', opacity: 0.9, fontSize: '1rem' }}>
+          Pide mercancía al almacén central para tu ruta.
+        </p>
+      </div>
+
+      <div style={{ padding: '0 var(--space-5)', marginTop: '-2rem', position: 'relative', zIndex: 10 }} className="animate-float-in">
       
       {error && (
         <div className="card" style={{ background: '#f8d7da', color: '#721c24', marginBottom: '1rem' }}>
@@ -142,6 +151,7 @@ export default function SellerPurchases() {
           ))}
         </div>
       )}
+      </div>
     </div>
   )
 }
