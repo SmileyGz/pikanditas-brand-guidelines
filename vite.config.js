@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/pikanditas-brand-guidelines/', // Cambiar a '/' cuando compres pikanditas.com
   plugins: [
     react(),
     VitePWA({
