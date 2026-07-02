@@ -5,13 +5,11 @@ import { QRCodeSVG } from 'qrcode.react'
 
 export default function SellerSales() {
   const { user } = useAuthStore()
-  const [saleType, setSaleType] = useState('b2c_20')
-  const [storeId, setStoreId] = useState('')
+  const [saleType] = useState('b2c_20') // Hardcoded
   const [quantity, setQuantity] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('efectivo')
   const [amountCollected, setAmountCollected] = useState('')
   const [notes, setNotes] = useState('')
-  const [stores, setStores] = useState([])
   const [sellerType, setSellerType] = useState('externo')
   const [mobileInventory, setMobileInventory] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -33,15 +31,6 @@ export default function SellerSales() {
         setSellerType(profile.seller_type || 'externo')
         setMobileInventory(profile.mobile_inventory || 0)
       }
-
-      const { data, error } = await supabase
-        .from('stores')
-        .select('id, name')
-        .eq('assigned_seller', user.id)
-      
-      if (!error && data) {
-        setStores(data)
-      }
     }
     loadData()
   }, [user])
@@ -50,10 +39,6 @@ export default function SellerSales() {
     e.preventDefault()
     if (!quantity || quantity <= 0) {
       setError('Ingresa una cantidad válida')
-      return
-    }
-    if (saleType !== 'b2c_20' && !storeId) {
-      setError('Selecciona una tienda')
       return
     }
 
@@ -67,8 +52,8 @@ export default function SellerSales() {
         .from('sales')
         .insert({
           seller_id: user.id,
-          store_id: saleType === 'b2c_20' ? null : storeId,
-          sale_type: saleType,
+          store_id: null,
+          sale_type: 'b2c_20',
           quantity: parseInt(quantity),
           unit_price: unitPrice,
           total_mxn: totalMxn,
@@ -161,39 +146,7 @@ export default function SellerSales() {
       )}
 
       <form onSubmit={handleSubmit} className="card">
-        <div className="form-group">
-          <label>Tipo de Venta</label>
-          <select 
-            className="input-field" 
-            value={saleType} 
-            onChange={(e) => {
-              setSaleType(e.target.value)
-              if (e.target.value === 'b2c_20') setStoreId('')
-            }}
-          >
-            <option value="b2c_20">Público / Directa ($20/bolsa)</option>
-            <option value="b2b_12">Tiendita Wholesale ($12/bolsa)</option>
-            <option value="b2b_10">Distribuidor Mayorista ($10/bolsa)</option>
-            <option value="consignment_collection">Cobranza Consignación ($12/bolsa)</option>
-          </select>
-        </div>
 
-        {saleType !== 'b2c_20' && (
-          <div className="form-group">
-            <label>Tienda / Cliente</label>
-            <select 
-              className="input-field" 
-              value={storeId} 
-              onChange={(e) => setStoreId(e.target.value)}
-              required
-            >
-              <option value="">Selecciona una tienda...</option>
-              {stores.map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
-          </div>
-        )}
 
         <div className="form-group">
           <label>Bolsas ({unitPrice} MXN c/u)</label>

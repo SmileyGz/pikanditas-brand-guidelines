@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useAuthStore } from '../../../store/authStore'
 import { supabase } from '../../../lib/supabase'
 import SpiceMeter from '../../../components/SpiceMeter'
+import { QRCodeSVG } from 'qrcode.react'
 
 export default function SellerCortes() {
   const { user } = useAuthStore()
@@ -24,6 +25,10 @@ export default function SellerCortes() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
+  
+  // Payment State
+  const [paymentMethod, setPaymentMethod] = useState('efectivo')
+  const [qrUrl, setQrUrl] = useState(null)
 
   // Fetch stores that the seller needs to visit
   useEffect(() => {
@@ -124,13 +129,42 @@ export default function SellerCortes() {
         p_sold_qty: soldQty,
         p_restock_qty: parsedRestock,
         p_cash_collected: cashToCollect,
-        p_seller_rating: sellerRating
+        p_seller_rating: sellerRating,
+        p_payment_method: paymentMethod
       })
 
       if (rpcError) throw rpcError
 
-      setSuccess(true)
-      setStep(4)
+      if (paymentMethod === 'mercado_pago_qr' && data.sale_id) {
+        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-mp-preference`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'b2b',
+            saleId: data.sale_id,
+            items: [{
+              title: `Corte Pikanditas (${soldQty || parsedRestock} pzas)`,
+              quantity: 1,
+              unit_price: cashToCollect,
+              currency_id: 'MXN'
+            }],
+            buyerInfo: {
+              name: selectedStore.name,
+              email: 'b2b@pikanditas.com'
+            }
+          })
+        })
+        const mpData = await res.json()
+        if (mpData.init_point) {
+          setQrUrl(mpData.init_point)
+        } else {
+          throw new Error('No se pudo generar el código QR')
+        }
+      } else {
+        setSuccess(true)
+        setStep(4)
+      }
     } catch (err) {
       console.error(err)
       setError('Error al procesar el corte: ' + err.message)
@@ -250,18 +284,54 @@ export default function SellerCortes() {
             />
           </div>
 
-          {/* Calificación de Interacción */}
           <div style={{ background: 'var(--color-surface-hover)', borderRadius: '8px', padding: '1rem', textAlign: 'center', marginTop: '1.5rem' }}>
             <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>¿Qué tan picante estuvo tu visita? 🥵</h3>
             <p className="text-muted" style={{ fontSize: '0.85rem', marginBottom: '0.5rem' }}>Califica el trato del cliente y si el exhibidor estaba en buen estado.</p>
             <SpiceMeter level={sellerRating} onChange={setSellerRating} max={5} />
           </div>
 
+          <div className="form-group" style={{ marginTop: '1.5rem' }}>
+            <label style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>Método de Pago</label>
+            <select 
+              className="input-field" 
+              value={paymentMethod} 
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            >
+              <option value="efectivo">Efectivo 💵</option>
+              <option value="transferencia">Transferencia 🏦</option>
+              <option value="mercado_pago_qr">Mercado Pago (QR) 💳</option>
+            </select>
+          </div>
+
+          {paymentMethod === 'transferencia' && (
+            <div className="card" style={{ background: '#f8f9fa', border: '2px dashed var(--color-primary)', textAlign: 'center', marginTop: '1rem' }}>
+              <h3 style={{ margin: '0 0 1rem 0' }}>Datos Bancarios</h3>
+              <p style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', fontWeight: 600 }}>Banco: Banco Azteca</p>
+              <p style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontFamily: 'monospace', letterSpacing: '2px' }}>127180016518102384</p>
+              <p style={{ margin: 0, color: 'var(--color-text-muted)' }}>Titular: José Luis González</p>
+            </div>
+          )}
+
+          {qrUrl && (
+            <div className="card animate-float-in" style={{ textAlign: 'center', border: '2px solid #4f46e5', background: '#eef2ff', marginTop: '1rem' }}>
+              <h3 style={{ color: '#4f46e5', marginBottom: '1rem' }}>Escanea para Pagar</h3>
+              <div style={{ background: 'white', padding: '1rem', display: 'inline-block', borderRadius: '1rem' }}>
+                <QRCodeSVG value={qrUrl} size={250} />
+              </div>
+              <p style={{ marginTop: '1rem', color: '#555' }}>Pídele al tendero que escanee este código para pagar.</p>
+              <button className="btn btn-secondary" style={{ marginTop: '1rem' }} onClick={() => { setSuccess(true); setStep(4); }}>
+                Simular Pago Completado (Dev)
+              </button>
+            </div>
+          )}
+
           <div style={{ display: 'flex', gap: '0.5rem', marginTop: '2rem' }}>
             <button className="btn btn-secondary" style={{ flex: 1 }} onClick={() => setStep(2)}>← Atrás</button>
-            <button className={`btn btn-primary ${loading ? 'loading' : ''}`} style={{ flex: 1 }} onClick={handleSubmit} disabled={loading}>
-              {loading ? 'Procesando...' : 'Confirmar Cobro ✅'}
-            </button>
+            {!qrUrl && (
+              <button className={`btn btn-primary ${loading ? 'loading' : ''}`} style={{ flex: 1 }} onClick={handleSubmit} disabled={loading}>
+                {loading ? 'Procesando...' : 'Confirmar Cobro ✅'}
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -274,7 +344,7 @@ export default function SellerCortes() {
           <p className="text-muted">El inventario se ha actualizado y la venta se guardó en el sistema.</p>
           
           <button className="btn btn-primary btn-full" style={{ marginTop: '2rem' }} onClick={() => {
-            setStep(1); setSelectedStore(null); setLeftQty(''); setRestockQty(''); setSellerRating(5);
+            setStep(1); setSelectedStore(null); setLeftQty(''); setRestockQty(''); setSellerRating(5); setQrUrl(null);
           }}>
             Hacer otro corte
           </button>
