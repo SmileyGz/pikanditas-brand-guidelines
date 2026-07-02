@@ -1,0 +1,1 @@
+import{r as e}from"./index-4z8X6YRB.js";var t=e(e=>({lang:`es`,setLang:t=>e({lang:t})}));export{t};
