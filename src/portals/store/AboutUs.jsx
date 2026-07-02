@@ -94,8 +94,8 @@ export default function AboutUs() {
               </ul>
             </div>
             
-            <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-              <Link to="/#bundles" className="btn btn-primary btn-lg btn-jiggle" style={{ display: 'inline-block' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', width: '100%' }}>
+              <Link to="/#bundles" className="btn btn-primary btn-lg btn-jiggle">
                 {texts.cta}
               </Link>
             </div>
