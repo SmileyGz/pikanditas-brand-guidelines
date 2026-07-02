@@ -264,7 +264,6 @@ export default function SellerSales() {
           </div>
         )}
 
-        {!qrUrl && (
 
         <div className="form-group">
           <label>Notas (opcional)</label>
