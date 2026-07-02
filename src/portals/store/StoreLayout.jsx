@@ -60,11 +60,6 @@ export default function StoreLayout() {
           <span className="nav-logo-text" style={{ fontWeight: 800, color: 'var(--color-primary)' }}>Pikanditas</span>
         </Link>
         
-        {/* Hamburger Icon for Mobile */}
-        <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Menu">
-          ☰
-        </button>
-
         <div className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
           <a href="/#bundles" onClick={(e) => { handleMenuClick(e); handleLinkClick(); }}>{lang === 'es' ? 'Menú' : 'Menu'}</a>
           <Link to="/nosotros" onClick={handleLinkClick}>{lang === 'es' ? 'Nosotros' : 'About'}</Link>
@@ -83,6 +78,12 @@ export default function StoreLayout() {
             <button className={`lang-btn ${lang === 'es' ? 'active' : ''}`} onClick={() => setLang('es')} style={{ color: lang === 'es' ? '#fff' : 'inherit' }}>ES</button>
             <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`} onClick={() => setLang('en')} style={{ color: lang === 'en' ? '#fff' : 'inherit' }}>EN</button>
           </div>
+          
+          {/* Hamburger Icon for Mobile (placed after language toggle) */}
+          <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Menu">
+            ☰
+          </button>
+
           <a href="/#checkout" className="btn btn-primary btn-sm btn-order-desktop" onClick={handleOrderClick}>
             {lang === 'es' ? 'Pedir Ahora' : 'Order Now'}
           </a>
