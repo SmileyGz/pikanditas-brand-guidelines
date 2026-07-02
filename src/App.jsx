@@ -118,7 +118,7 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ErrorBoundary>
-        <BrowserRouter>
+        <BrowserRouter basename="/pikanditas-brand-guidelines/">
           <Suspense fallback={<PortalLoader />}>
             <Routes>
               {/* ── Brand / Landing ── */}
