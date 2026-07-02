@@ -11,9 +11,9 @@ export function useStock() {
       const totalProduced = (prodData || []).reduce((sum, log) => sum + (log.bags_yield || 0), 0)
 
       // 2. Total Consignado (En Calle)
-      const { data: consData, error: consErr } = await supabase.from('consignments').select('stock_delivered')
+      const { data: consData, error: consErr } = await supabase.from('consignments').select('delivered_qty')
       if (consErr && consErr.code !== '42P01') throw consErr
-      const totalConsigned = (consData || []).reduce((sum, c) => sum + (c.stock_delivered || 0), 0)
+      const totalConsigned = (consData || []).reduce((sum, c) => sum + (c.delivered_qty || 0), 0)
 
       // 3. Total Ventas B2B (Directas y de contado)
       const { data: salesData, error: salesErr } = await supabase.from('sales_receipts').select('quantity')
