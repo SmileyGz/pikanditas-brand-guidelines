@@ -74,7 +74,6 @@ export default function SellerPurchases() {
   }
 
   return (
-  return (
     <div style={{ padding: 0, minHeight: '100vh', background: '#fffbeb' }}>
       <div style={{ background: '#ea580c', color: 'white', padding: 'var(--space-6) var(--space-5)', paddingBottom: '3rem', borderBottomLeftRadius: '2rem', borderBottomRightRadius: '2rem' }}>
         <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.8rem', fontWeight: 900, margin: 0 }}>

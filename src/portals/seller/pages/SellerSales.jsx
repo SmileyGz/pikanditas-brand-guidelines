@@ -285,5 +285,6 @@ export default function SellerSales() {
       </form>
       )}
     </div>
+    </div>
   )
 }
