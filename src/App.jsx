@@ -10,7 +10,7 @@ const BrandMoodboard   = lazy(() => import('./portals/brand/BrandMoodboard'))
 const StoreLayout      = lazy(() => import('./portals/store/StoreLayout'))
 const StoreLanding     = lazy(() => import('./portals/store/StoreLanding'))
 const AboutUs          = lazy(() => import('./portals/store/AboutUs'))
-const PrivacyPolicy    = lazy(() => import('./portals/store/PrivacyPolicy'))
+// Removed PrivacyPolicy import as it is now combined with TermsOfService
 const TermsOfService   = lazy(() => import('./portals/store/TermsOfService'))
 const SellerLanding    = lazy(() => import('./portals/store/SellerLanding'))
 const TiendaLanding    = lazy(() => import('./portals/store/TiendaLanding'))
@@ -125,7 +125,7 @@ export default function App() {
               <Route element={<StoreLayout />}>
                 <Route path="/" element={<StoreLanding />} />
                 <Route path="/nosotros" element={<AboutUs />} />
-                <Route path="/privacidad" element={<PrivacyPolicy />} />
+                <Route path="/privacidad" element={<Navigate to="/terminos" replace />} />
                 <Route path="/terminos" element={<TermsOfService />} />
                 <Route path="/mayoristas" element={<SellerLanding />} />
                 <Route path="/tienditas" element={<TiendaLanding />} />

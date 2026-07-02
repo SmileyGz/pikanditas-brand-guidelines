@@ -99,12 +99,10 @@ export default function StoreLayout() {
           <img src="/logo.png" alt="Pikanditas" className="footer-logo" style={{ height: '140px', width: 'auto', marginBottom: '1rem' }} />
           
           <div className="footer-links">
-            <Link to="/privacidad">{lang === 'es' ? 'Aviso de Privacidad' : 'Privacy Policy'}</Link>
-            <Link to="/terminos">{lang === 'es' ? 'Términos de Servicio' : 'Terms of Service'}</Link>
+            <Link to="/terminos">{lang === 'es' ? 'Términos y Privacidad' : 'Terms & Privacy'}</Link>
           </div>
           
           <div className="footer-legal">
-            <p>{lang === 'es' ? 'Precaución de alergias: Empacado en instalaciones donde se procesan cacahuates y soya.' : 'Allergy warning: Packaged in facilities that process peanuts and soy.'}</p>
             <p>© {new Date().getFullYear()} Pikanditas. Todos los derechos reservados.</p>
             <p style={{ opacity: 0.5 }}>Powered by Jonla Agencia</p>
           </div>

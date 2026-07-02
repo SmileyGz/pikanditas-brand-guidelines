@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { supabase } from '../../../lib/supabase'
 import { useQueryClient, useQuery } from '@tanstack/react-query'
+import { useSettings } from '../../../hooks/useSettings'
 
 export default function StoreFormModal({ store, onClose }) {
   const queryClient = useQueryClient()
+  const { settings } = useSettings()
   const isEdit = !!store
 
   const [formData, setFormData] = useState({
@@ -124,7 +126,12 @@ export default function StoreFormModal({ store, onClose }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
             <div className="input-group" style={{ marginBottom: 0 }}>
               <label className="input-label">Zona</label>
-              <input name="zone" className="input-field" value={formData.zone} onChange={handleChange} placeholder="Ej. Centro" />
+              <select name="zone" className="input-field" value={formData.zone} onChange={handleChange}>
+                <option value="">-- Selecciona --</option>
+                {(settings?.zonas_activas || []).map(z => (
+                  <option key={z} value={z}>{z}</option>
+                ))}
+              </select>
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
               <label className="input-label">Nivel de Precio (Tier)</label>
