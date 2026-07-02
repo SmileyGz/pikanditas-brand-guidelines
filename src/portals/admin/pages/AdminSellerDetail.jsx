@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../../../lib/supabase'
 import SellerGoalModal from '../components/SellerGoalModal'
@@ -7,6 +7,7 @@ import SellerGoalModal from '../components/SellerGoalModal'
 export default function AdminSellerDetail() {
   const { id } = useParams()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const [showGoalModal, setShowGoalModal] = useState(false)
 
   const { data: seller, isLoading } = useQuery({
@@ -85,6 +86,17 @@ export default function AdminSellerDetail() {
     queryClient.invalidateQueries(['all-stores-light'])
   }
 
+  const handleRemoveSeller = async () => {
+    if (!window.confirm('¿Estás seguro de dar de baja a este vendedor? Ya no tendrá acceso al portal y se desasignarán todas sus tiendas.')) return
+    
+    // Unassign all their stores first
+    await supabase.from('stores').update({ assigned_seller: null }).eq('assigned_seller', id)
+    // Demote their role to 'user' so they no longer appear as sellers
+    await supabase.from('profiles').update({ role: 'user' }).eq('id', id)
+    
+    navigate('/admin/vendedores')
+  }
+
   if (isLoading) return <div className="admin-page"><p>Cargando expediente...</p></div>
   if (!seller) return <div className="admin-page"><p>No se encontró el vendedor.</p></div>
 
@@ -106,6 +118,9 @@ export default function AdminSellerDetail() {
           </h1>
           <p className="admin-page-subtitle">Expediente del Vendedor</p>
         </div>
+        <button className="btn btn-ghost" style={{ color: 'var(--color-danger)' }} onClick={handleRemoveSeller}>
+          🗑️ Dar de Baja
+        </button>
       </header>
 
       {/* Main Info Card */}

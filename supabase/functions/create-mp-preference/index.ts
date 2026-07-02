@@ -15,7 +15,7 @@ serve(async (req) => {
   }
 
   try {
-    const { items, buyerInfo } = await req.json()
+    const { items, buyerInfo, type, saleId } = await req.json()
     
     // MP Token comes from Supabase Secrets
     const MP_ACCESS_TOKEN = Deno.env.get('MP_ACCESS_TOKEN')
@@ -28,31 +28,42 @@ serve(async (req) => {
     const total_price = items.reduce((sum: number, item: any) => sum + (item.unit_price * item.quantity), 0)
     const quantity = items.reduce((sum: number, item: any) => sum + item.quantity, 0)
 
-    // 1. Save pending order in Supabase
+    let externalReference = ""
+    let orderId = ""
+
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { data: order, error: orderError } = await supabaseClient
-      .from('online_orders')
-      .insert({
-        buyer_name: buyerInfo?.name || 'Cliente Online',
-        buyer_email: buyerInfo?.email || 'contacto@pikanditas.com',
-        quantity: quantity,
-        total_price: total_price,
-        payment_status: 'pending'
-      })
-      .select()
-      .single()
+    if (type === 'b2b') {
+      // For B2B sales (Seller App), the sale is already inserted in the 'sales' table.
+      if (!saleId) throw new Error("saleId is required for B2B payments")
+      externalReference = `B2B_${saleId}`
+    } else {
+      // 1. Save pending order in Supabase (B2C)
+      const { data: order, error: orderError } = await supabaseClient
+        .from('online_orders')
+        .insert({
+          buyer_name: buyerInfo?.name || 'Cliente Online',
+          buyer_email: buyerInfo?.email || 'contacto@pikanditas.com',
+          quantity: quantity,
+          total_price: total_price,
+          payment_status: 'pending'
+        })
+        .select()
+        .single()
 
-    if (orderError) throw orderError
+      if (orderError) throw orderError
+      orderId = order.id
+      externalReference = `B2C_${order.id}`
+    }
 
     // 2. Create MP Preference
     const result = await preference.create({
       body: {
         items: items,
-        external_reference: order.id, // Link to our DB order ID
+        external_reference: externalReference, // Distinguishes B2B from B2C
         payment_methods: {
           excluded_payment_methods: [], // Enable OXXO and Cards
           installments: 1 // Force single payment for small items
@@ -67,11 +78,13 @@ serve(async (req) => {
       }
     })
 
-    // 3. Update order with MP Preference ID
-    await supabaseClient
-      .from('online_orders')
-      .update({ mp_preference_id: result.id })
-      .eq('id', order.id)
+    // 3. Update order with MP Preference ID (only for B2C)
+    if (type !== 'b2b') {
+      await supabaseClient
+        .from('online_orders')
+        .update({ mp_preference_id: result.id })
+        .eq('id', orderId)
+    }
 
     // Return the init_point (Checkout Pro URL)
     return new Response(

@@ -3,10 +3,10 @@ import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 
 const NAV = [
-  { to: 'home',    icon: '🏠', label: 'Inicio' },
-  { to: 'visitas', icon: '📍', label: 'Mapa' },
+  { to: 'visitas', icon: '📍', label: 'Ruta' },
+  { to: 'ventas',  icon: '🛒', label: 'Vender' },
   { to: 'cortes',  icon: '💰', label: 'Cortes' },
-  { to: 'compras', icon: '📦', label: 'Pedidos' },
+  { to: 'compras', icon: '📦', label: 'CEDIS' },
   { to: 'panico',  icon: '🚨', label: 'Pánico' },
 ]
 

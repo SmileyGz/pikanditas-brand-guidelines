@@ -18,47 +18,61 @@ serve(async (req) => {
       })
       const paymentInfo = await response.json()
 
-      // The external_reference is our online_orders ID
-      const orderId = paymentInfo.external_reference
+      const externalRef = paymentInfo.external_reference || ""
       const status = paymentInfo.status
 
-      if (orderId) {
+      if (externalRef) {
         const supabaseClient = createClient(
           Deno.env.get('SUPABASE_URL') ?? '',
           Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
         )
 
-        // Update online_orders
-        await supabaseClient
-          .from('online_orders')
-          .update({ 
-            payment_status: status,
-            mp_payment_id: paymentId.toString()
-          })
-          .eq('id', orderId)
+        if (externalRef.startsWith('B2B_')) {
+          const saleId = externalRef.replace('B2B_', '')
+          
+          if (status === 'approved') {
+            await supabaseClient
+              .from('sales')
+              .update({ 
+                payment_status: 'paid',
+              })
+              .eq('id', saleId)
+          }
 
-        // If approved, create a sale record in the sales table for reporting
-        if (status === 'approved') {
-          // First fetch the order to get details
-          const { data: order } = await supabaseClient
+        } else if (externalRef.startsWith('B2C_') || !externalRef.includes('_')) {
+          // Fallback for older references without prefix or with B2C_ prefix
+          const orderId = externalRef.replace('B2C_', '')
+
+          // Update online_orders
+          await supabaseClient
             .from('online_orders')
-            .select('*')
-            .eq('id', orderId)
-            .single()
-
-          if (order) {
-            // Register public sale
-            await supabaseClient.from('sales').insert({
-              sale_type: 'b2c_20',
-              quantity: order.quantity,
-              unit_price: 20, // B2C price
-              total_mxn: order.total_price,
-              payment_method: 'mercado_pago',
-              payment_status: 'paid',
-              amount_collected: order.total_price,
-              amount_pending: 0,
-              notes: `Online Sale ID: ${order.id}`
+            .update({ 
+              payment_status: status,
+              mp_payment_id: paymentId.toString()
             })
+            .eq('id', orderId)
+
+          // If approved, create a sale record in the sales table for reporting
+          if (status === 'approved') {
+            const { data: order } = await supabaseClient
+              .from('online_orders')
+              .select('*')
+              .eq('id', orderId)
+              .single()
+
+            if (order) {
+              await supabaseClient.from('sales').insert({
+                sale_type: 'b2c_20',
+                quantity: order.quantity,
+                unit_price: 20,
+                total_mxn: order.total_price,
+                payment_method: 'mercado_pago',
+                payment_status: 'paid',
+                amount_collected: order.total_price,
+                amount_pending: 0,
+                notes: `Online Sale ID: ${order.id}`
+              })
+            }
           }
         }
       }

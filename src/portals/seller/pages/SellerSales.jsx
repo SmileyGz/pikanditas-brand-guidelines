@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useAuthStore } from '../../../store/authStore'
 import { supabase } from '../../../lib/supabase'
+import { QRCodeSVG } from 'qrcode.react'
 
 export default function SellerSales() {
   const { user } = useAuthStore()
@@ -16,6 +17,7 @@ export default function SellerSales() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
+  const [qrUrl, setQrUrl] = useState(null)
 
   // Auto-calculate unit price and total
   const unitPrice = saleType === 'b2c_20' ? 20 : saleType === 'b2b_12' || saleType === 'consignment_collection' ? 12 : 10
@@ -58,9 +60,10 @@ export default function SellerSales() {
     setLoading(true)
     setError(null)
     setSuccess(false)
+    setQrUrl(null)
 
     try {
-      const { error: insertError } = await supabase
+      const { data: newSale, error: insertError } = await supabase
         .from('sales')
         .insert({
           seller_id: user.id,
@@ -70,11 +73,13 @@ export default function SellerSales() {
           unit_price: unitPrice,
           total_mxn: totalMxn,
           payment_method: paymentMethod,
-          payment_status: amountPending <= 0 ? 'paid' : amountCollected > 0 ? 'partial' : 'pending',
+          payment_status: paymentMethod === 'mercado_pago_qr' ? 'pending' : (amountPending <= 0 ? 'paid' : amountCollected > 0 ? 'partial' : 'pending'),
           amount_collected: amountCollected ? parseFloat(amountCollected) : 0,
           amount_pending: amountPending,
           notes: notes
         })
+        .select()
+        .single()
 
       if (insertError) throw insertError
       
@@ -83,7 +88,37 @@ export default function SellerSales() {
         setMobileInventory(prev => prev - quantity)
       }
 
-      setSuccess(true)
+      if (paymentMethod === 'mercado_pago_qr') {
+        // Generar preferencia de pago
+        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-mp-preference`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'b2b',
+            saleId: newSale.id,
+            items: [{
+              title: `Venta B2B Pikanditas (${quantity} pzas)`,
+              quantity: 1, // Total as one item for simplicity
+              unit_price: totalMxn,
+              currency_id: 'MXN'
+            }],
+            buyerInfo: {
+              name: 'Cliente Tiendita',
+              email: 'b2b@pikanditas.com'
+            }
+          })
+        })
+        const data = await res.json()
+        if (data.init_point) {
+          setQrUrl(data.init_point)
+        } else {
+          throw new Error('No se pudo generar el código QR')
+        }
+      } else {
+        setSuccess(true)
+      }
+
       setQuantity('')
       setAmountCollected('')
       setNotes('')
@@ -206,8 +241,30 @@ export default function SellerSales() {
           >
             <option value="efectivo">Efectivo 💵</option>
             <option value="transferencia">Transferencia 🏦</option>
+            <option value="mercado_pago_qr">Mercado Pago (QR) 💳</option>
           </select>
         </div>
+
+        {paymentMethod === 'transferencia' && (
+          <div className="card" style={{ background: '#f8f9fa', border: '2px dashed var(--color-primary)', textAlign: 'center' }}>
+            <h3 style={{ margin: '0 0 1rem 0' }}>Datos Bancarios</h3>
+            <p style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', fontWeight: 600 }}>Banco: Banco Azteca</p>
+            <p style={{ margin: '0 0 0.5rem 0', fontSize: '1.5rem', fontFamily: 'monospace', letterSpacing: '2px' }}>127180016518102384</p>
+            <p style={{ margin: 0, color: 'var(--color-text-muted)' }}>Titular: José Luis González</p>
+          </div>
+        )}
+
+        {qrUrl && (
+          <div className="card animate-float-in" style={{ textAlign: 'center', border: '2px solid #009ee3', background: '#f1faff' }}>
+            <h3 style={{ color: '#009ee3', marginBottom: '1rem' }}>Escanea para Pagar</h3>
+            <div style={{ background: 'white', padding: '1rem', display: 'inline-block', borderRadius: '1rem' }}>
+              <QRCodeSVG value={qrUrl} size={250} />
+            </div>
+            <p style={{ marginTop: '1rem', color: '#555' }}>Pídele al tendero que escanee este código con la cámara de su celular.</p>
+          </div>
+        )}
+
+        {!qrUrl && (
 
         <div className="form-group">
           <label>Notas (opcional)</label>
@@ -220,9 +277,11 @@ export default function SellerSales() {
           />
         </div>
 
-        <button type="submit" className={`btn btn-primary btn-full ${loading ? 'loading' : ''}`} disabled={loading}>
-          {loading ? 'Guardando...' : '💾 Guardar Registro'}
-        </button>
+        {!qrUrl && (
+          <button type="submit" className={`btn btn-primary btn-full ${loading ? 'loading' : ''}`} disabled={loading}>
+            {loading ? 'Guardando...' : '💾 Guardar Registro'}
+          </button>
+        )}
       </form>
     </div>
   )
