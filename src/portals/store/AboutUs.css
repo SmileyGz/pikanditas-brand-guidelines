@@ -25,10 +25,11 @@
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  0% { transform: translateY(0) rotate(-15deg); opacity: 0; }
   10% { opacity: 0.15; }
+  50% { transform: translateY(-60vh) rotate(15deg); }
   90% { opacity: 0.15; }
-  100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+  100% { transform: translateY(-120vh) rotate(-15deg); opacity: 0; }
 }
 
 .about-content {
