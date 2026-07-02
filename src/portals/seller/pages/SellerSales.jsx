@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuthStore } from '../../../store/authStore'
 import { supabase } from '../../../lib/supabase'
 import { QRCodeSVG } from 'qrcode.react'
+import PrintableReceipt from '../../../components/PrintableReceipt'
 
 export default function SellerSales() {
   const { user } = useAuthStore()
@@ -16,6 +17,8 @@ export default function SellerSales() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
   const [qrUrl, setQrUrl] = useState(null)
+  const [showReceipt, setShowReceipt] = useState(false)
+  const [savedSaleData, setSavedSaleData] = useState(null)
 
   // Auto-calculate unit price and total
   const unitPrice = saleType === 'b2c_20' ? 20 : saleType === 'b2b_12' || saleType === 'consignment_collection' ? 12 : 10
@@ -46,6 +49,7 @@ export default function SellerSales() {
     setError(null)
     setSuccess(false)
     setQrUrl(null)
+    setShowReceipt(false)
 
     try {
       const { data: newSale, error: insertError } = await supabase
@@ -72,6 +76,12 @@ export default function SellerSales() {
         await supabase.from('profiles').update({ mobile_inventory: mobileInventory - quantity }).eq('id', user.id)
         setMobileInventory(prev => prev - quantity)
       }
+
+      setSavedSaleData({
+        ...newSale,
+        seller_name: user?.user_metadata?.name || 'Agente Pikanditas',
+        store_name: 'Público General'
+      })
 
       if (paymentMethod === 'mercado_pago_qr') {
         // Generar preferencia de pago
@@ -133,9 +143,42 @@ export default function SellerSales() {
 
       <div style={{ padding: '0 var(--space-5)', marginTop: '-2rem', position: 'relative', zIndex: 10 }}>
 
-      {success && (
-        <div className="card" style={{ background: '#d4edda', color: '#155724', marginBottom: '1rem' }}>
-          ✅ Venta registrada correctamente.
+      {success && !showReceipt && (
+        <div className="card" style={{ background: '#d4edda', color: '#155724', marginBottom: '1rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
+          <h2 style={{ margin: '0 0 1rem 0' }}>Venta Exitosa</h2>
+          <p>La venta se registró correctamente.</p>
+          <button className="btn btn-primary btn-full" style={{ marginTop: '1rem' }} onClick={() => setShowReceipt(true)}>
+            📄 Ver / Enviar Ticket
+          </button>
+          <button className="btn btn-ghost btn-full" style={{ marginTop: '0.5rem' }} onClick={() => {
+            setSuccess(false)
+            setSavedSaleData(null)
+          }}>
+            Hacer nueva venta
+          </button>
+        </div>
+      )}
+
+      {showReceipt && (
+        <div className="card animate-float-in">
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.1rem' }}>Ticket de Compra</h2>
+            <button className="btn btn-ghost btn-sm" onClick={() => setShowReceipt(false)}>Cerrar</button>
+          </div>
+          <div style={{ border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', transform: 'scale(0.9)', transformOrigin: 'top center', marginBottom: '-10%' }}>
+            <PrintableReceipt data={savedSaleData} />
+          </div>
+          
+          <a 
+            href={`https://wa.me/?text=${encodeURIComponent(`🌶️ *Pikanditas* 🐻\n\n¡Gracias por tu compra!\n\n📄 *Detalle de Venta*\nFolio: ${savedSaleData?.id?.split('-')[0].toUpperCase()}\nTotal Pagado: $${savedSaleData?.total_mxn?.toFixed(2)}\n\nEste es un comprobante digital de tu pago en ${paymentMethod}.`)}`}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="btn btn-secondary btn-full" 
+            style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '0.5rem', background: '#25D366', color: 'white', borderColor: '#25D366' }}
+          >
+            📲 Enviar por WhatsApp
+          </a>
         </div>
       )}
 
@@ -145,6 +188,7 @@ export default function SellerSales() {
         </div>
       )}
 
+      {!success && (
       <form onSubmit={handleSubmit} className="card">
 
 
@@ -239,6 +283,7 @@ export default function SellerSales() {
           </button>
         )}
       </form>
+      )}
     </div>
   )
 }

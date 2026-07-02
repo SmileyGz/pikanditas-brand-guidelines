@@ -4,6 +4,7 @@ import { useAuthStore } from '../../../store/authStore'
 import { supabase } from '../../../lib/supabase'
 import SpiceMeter from '../../../components/SpiceMeter'
 import { QRCodeSVG } from 'qrcode.react'
+import PrintableReceipt from '../../../components/PrintableReceipt'
 
 export default function SellerCortes() {
   const { user } = useAuthStore()
@@ -29,6 +30,10 @@ export default function SellerCortes() {
   // Payment State
   const [paymentMethod, setPaymentMethod] = useState('efectivo')
   const [qrUrl, setQrUrl] = useState(null)
+  
+  // Receipt State
+  const [showReceipt, setShowReceipt] = useState(false)
+  const [savedSaleData, setSavedSaleData] = useState(null)
 
   // Fetch stores that the seller needs to visit
   useEffect(() => {
@@ -134,6 +139,20 @@ export default function SellerCortes() {
       })
 
       if (rpcError) throw rpcError
+
+      // Save sale data for the receipt
+      setSavedSaleData({
+        id: data.sale_id || `temp-${Date.now()}`,
+        sale_type: visitType === 'consignacion' ? 'consignment_collection' : 'b2b_12',
+        quantity: soldQty || parsedRestock,
+        restock_qty: visitType === 'consignacion' ? parsedRestock : 0,
+        unit_price: pricePerBag,
+        total_mxn: cashToCollect,
+        payment_method: paymentMethod,
+        created_at: new Date().toISOString(),
+        store_name: selectedStore.name,
+        seller_name: user?.user_metadata?.name || 'Agente Pikanditas'
+      })
 
       if (paymentMethod === 'mercado_pago_qr' && data.sale_id) {
         const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
@@ -337,20 +356,46 @@ export default function SellerCortes() {
       )}
 
       {/* STEP 4: Éxito */}
-      {step === 4 && (
+      {step === 4 && !showReceipt && (
         <div className="card animate-float-in" style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '4rem' }}>✅</div>
           <h2 style={{ fontSize: '1.5rem', margin: '1rem 0' }}>Corte Exitoso</h2>
           <p className="text-muted">El inventario se ha actualizado y la venta se guardó en el sistema.</p>
           
-          <button className="btn btn-primary btn-full" style={{ marginTop: '2rem' }} onClick={() => {
-            setStep(1); setSelectedStore(null); setLeftQty(''); setRestockQty(''); setSellerRating(5); setQrUrl(null);
+          <button className="btn btn-primary btn-full" style={{ marginTop: '2rem' }} onClick={() => setShowReceipt(true)}>
+            📄 Ver / Enviar Ticket
+          </button>
+          
+          <button className="btn btn-ghost btn-full" style={{ marginTop: '0.5rem' }} onClick={() => {
+            setStep(1); setSelectedStore(null); setLeftQty(''); setRestockQty(''); setSellerRating(5); setQrUrl(null); setShowReceipt(false); setSavedSaleData(null);
           }}>
             Hacer otro corte
           </button>
           <Link to="/seller" className="btn btn-ghost btn-full" style={{ marginTop: '0.5rem' }}>
             Volver al Menú
           </Link>
+        </div>
+      )}
+
+      {step === 4 && showReceipt && (
+        <div className="card animate-float-in">
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.1rem' }}>Comprobante de Visita</h2>
+            <button className="btn btn-ghost btn-sm" onClick={() => setShowReceipt(false)}>Cerrar</button>
+          </div>
+          <div style={{ border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', transform: 'scale(0.9)', transformOrigin: 'top center', marginBottom: '-10%' }}>
+            <PrintableReceipt data={savedSaleData} />
+          </div>
+          
+          <a 
+            href={`https://wa.me/?text=${encodeURIComponent(`🌶️ *Pikanditas* 🐻\n\n¡Gracias por tu compra, ${selectedStore?.name}!\n\n📄 *Detalle del Corte*\nTotal Pagado: $${savedSaleData?.total_mxn?.toFixed(2)}\nBolsas Cobradas: ${savedSaleData?.quantity}\nBolsas Nuevas (Resurtido): ${savedSaleData?.restock_qty || 0}\n\nEste es un comprobante digital de tu pago en ${paymentMethod}.`)}`}
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="btn btn-secondary btn-full" 
+            style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '0.5rem', background: '#25D366', color: 'white', borderColor: '#25D366' }}
+          >
+            📲 Enviar por WhatsApp
+          </a>
         </div>
       )}
 
