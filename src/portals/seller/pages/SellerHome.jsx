@@ -67,7 +67,7 @@ export default function SellerHome() {
   return (
     <div className="seller-home">
       {/* ── Greeting ── */}
-      <section className="seller-greeting animate-float-in chamoy-drip">
+      <section className="seller-greeting animate-float-in">
         <div className="greeting-left">
           <h1 style={{color: 'white'}}>¡Hola, {name}! 🐻</h1>
           <p className="greeting-role" style={{color: 'rgba(255,255,255,0.8)'}}>Nivel: {tier}</p>

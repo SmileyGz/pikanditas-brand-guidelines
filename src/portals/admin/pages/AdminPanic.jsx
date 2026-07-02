@@ -40,7 +40,7 @@ export default function AdminPanic() {
   const resolvedAlerts = alerts.filter(a => a.status === 'resolved')
 
   return (
-    <div className={`admin-page ${openAlerts.length > 0 ? 'chamoy-drip' : ''}`} style={{ transition: 'all 0.5s', backgroundColor: openAlerts.length > 0 ? '#fff5f5' : 'transparent' }}>
+    <div className={`admin-page`} style={{ transition: 'all 0.5s', backgroundColor: openAlerts.length > 0 ? '#fff5f5' : 'transparent' }}>
       <header className="admin-page-header">
         <h1 className="admin-page-title">🚨 Central de Pánico</h1>
         <p className="admin-page-subtitle">Monitoreo de urgencias en campo</p>

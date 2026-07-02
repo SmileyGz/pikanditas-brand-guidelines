@@ -109,26 +109,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 50%;
 }
 
-/* ── 6. CHAMOY DRIP ELEMENT ─────────────────────────────────────── */
-.chamoy-drip {
-  position: relative;
-  background: var(--color-primary);
-  color: white;
-  padding: 2rem 1rem 3rem 1rem;
-  margin-bottom: 30px;
-}
-.chamoy-drip::after {
-  content: '';
-  position: absolute;
-  bottom: -20px;
-  left: 0;
-  width: 100%;
-  height: 40px;
-  background-image: radial-gradient(circle at 20px 0, transparent 20px, var(--color-primary) 21px);
-  background-size: 40px 40px;
-  background-repeat: repeat-x;
-  z-index: 10;
-}
+
 
 /* Global Panic Overlay */
 .panic-overlay {
@@ -278,22 +259,7 @@ h1, h2, h3, h4, h5, h6 {
 .toast.error   { background: var(--color-danger); }
 .toast.warning { background: #aa7700; }
 
-/* Single Drip decorative element */
-.single-drip {
-  position: relative;
-  overflow: visible;
-}
-.single-drip::after {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: var(--drip-left, 20%);
-  width: 10px;
-  border-radius: 0 0 50% 50%;
-  background: var(--color-primary);
-  animation: drip 0.6s ease-out both;
-  height: 18px;
-}
+
 
 /* Spice Meter */
 .spice-meter {
