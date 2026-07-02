@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import { useLangStore } from '../../store/langStore'
 import './StoreLanding.css'
@@ -28,11 +28,18 @@ export default function StoreLayout() {
     }
   }
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   const handleLogoClick = (e) => {
     if (isHome) {
       e.preventDefault()
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+    setIsMenuOpen(false)
+  }
+
+  const handleLinkClick = () => {
+    setIsMenuOpen(false)
   }
 
   return (
@@ -48,22 +55,35 @@ export default function StoreLayout() {
         borderBottom: '1px solid rgba(255,255,255,0.3)',
         boxShadow: '0 4px 30px rgba(0,0,0,0.05)'
       }}>
-        <Link to="/" onClick={handleLogoClick} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none' }}>
-          <img src="/logo.png" alt="Pikanditas Logo" style={{ height: '90px', width: 'auto' }} />
-          <span style={{ fontWeight: 800, color: 'var(--color-primary)', fontSize: '1.5rem' }}>Pikanditas</span>
+        <Link to="/" onClick={handleLogoClick} className="nav-brand-link" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+          <img src="/logo.png" alt="Pikanditas Logo" className="nav-logo-img" />
+          <span className="nav-logo-text" style={{ fontWeight: 800, color: 'var(--color-primary)' }}>Pikanditas</span>
         </Link>
-        <div className="nav-links">
-          <a href="/#bundles" onClick={handleMenuClick}>{lang === 'es' ? 'Menú' : 'Menu'}</a>
-          <Link to="/nosotros">{lang === 'es' ? 'Nosotros' : 'About'}</Link>
-          <Link to="/mayoristas" style={{ color: 'var(--color-primary)' }}>{lang === 'es' ? 'Mayoristas' : 'Wholesale'}</Link>
-          <Link to="/tienditas" style={{ color: 'var(--color-secondary)' }}>{lang === 'es' ? 'Tienditas' : 'Retail'}</Link>
+        
+        {/* Hamburger Icon for Mobile */}
+        <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Menu">
+          ☰
+        </button>
+
+        <div className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
+          <a href="/#bundles" onClick={(e) => { handleMenuClick(e); handleLinkClick(); }}>{lang === 'es' ? 'Menú' : 'Menu'}</a>
+          <Link to="/nosotros" onClick={handleLinkClick}>{lang === 'es' ? 'Nosotros' : 'About'}</Link>
+          <Link to="/mayoristas" onClick={handleLinkClick} style={{ color: 'var(--color-primary)' }}>{lang === 'es' ? 'Mayoristas' : 'Wholesale'}</Link>
+          <Link to="/tienditas" onClick={handleLinkClick} style={{ color: 'var(--color-secondary)' }}>{lang === 'es' ? 'Tienditas' : 'Retail'}</Link>
+          
+          <div className="nav-actions-mobile-only" style={{ display: 'none', marginTop: '1rem', width: '100%' }}>
+            <a href="/#checkout" className="btn btn-primary btn-full" onClick={(e) => { handleOrderClick(e); handleLinkClick(); }}>
+              {lang === 'es' ? 'Pedir Ahora' : 'Order Now'}
+            </a>
+          </div>
         </div>
-        <div className="nav-actions" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        
+        <div className="nav-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <div className="lang-toggle" style={{ position: 'static', border: 'none', background: 'rgba(0,0,0,0.05)' }}>
             <button className={`lang-btn ${lang === 'es' ? 'active' : ''}`} onClick={() => setLang('es')} style={{ color: lang === 'es' ? '#fff' : 'inherit' }}>ES</button>
             <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`} onClick={() => setLang('en')} style={{ color: lang === 'en' ? '#fff' : 'inherit' }}>EN</button>
           </div>
-          <a href="/#checkout" className="btn btn-primary btn-sm" onClick={handleOrderClick}>
+          <a href="/#checkout" className="btn btn-primary btn-sm btn-order-desktop" onClick={handleOrderClick}>
             {lang === 'es' ? 'Pedir Ahora' : 'Order Now'}
           </a>
         </div>
