@@ -358,8 +358,8 @@ export default function StoreLanding() {
 
       {/* ── Section 6: Social Proof (Cinematic Background) ── */}
       <section className="store-section" style={{ 
-        background: '#111 url(/social-img.jpg) center center no-repeat fixed', 
-        backgroundSize: 'auto 115vh',
+        background: '#111 url(/social-img.jpg) center center no-repeat', 
+        backgroundSize: 'cover',
         position: 'relative',
         borderRadius: 'var(--radius-xl)', 
         marginBottom: '4rem', 

@@ -132,9 +132,9 @@
 
 /* ── Global Sections ── */
 .store-section {
-  padding: var(--space-16) var(--space-6);
+  padding: 6rem var(--space-6);
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 4rem auto;
   position: relative;
   z-index: 2;
 }
