@@ -50,6 +50,34 @@ export default function AdminRestock() {
     }
   }
 
+  const handleDelete = async (order) => {
+    if (!window.confirm(`¿Seguro que deseas ELIMINAR este registro de resurtido de ${order.quantity} bolsas?`)) return
+    
+    setLoading(true)
+    
+    // Si ya estaba aprobado y era inhouse, debemos revertir el inventario móvil
+    if (order.payment_status === 'approved') {
+      const isInhouse = order.buyer_name.includes('[INHOUSE]')
+      const sellerId = order.buyer_name.split(': ')[1]
+      if (isInhouse && sellerId) {
+        const { data: profile } = await supabase.from('profiles').select('mobile_inventory').eq('id', sellerId).single()
+        if (profile) {
+          const newInv = Math.max(0, (profile.mobile_inventory || 0) - order.quantity)
+          await supabase.from('profiles').update({ mobile_inventory: newInv }).eq('id', sellerId)
+        }
+      }
+    }
+
+    const { error } = await supabase.from('online_orders').delete().eq('id', order.id)
+    
+    setLoading(false)
+    if (error) {
+      alert('Error al borrar: ' + error.message)
+    } else {
+      queryClient.invalidateQueries(['admin-restock-requests'])
+    }
+  }
+
   const pending = requests.filter(r => r.payment_status === 'pending')
   const completed = requests.filter(r => r.payment_status !== 'pending')
 
@@ -94,6 +122,15 @@ export default function AdminRestock() {
                       >
                         {req.buyer_name.includes('[INHOUSE]') ? '✅ Autorizar Traspaso' : '✅ Cobrar y Surtir'}
                       </button>
+                      <button 
+                        className="btn btn-ghost"
+                        style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 0, color: 'var(--color-danger)', marginLeft: '0.5rem' }}
+                        onClick={() => handleDelete(req)}
+                        disabled={loading}
+                        title="Eliminar Resurtido"
+                      >
+                        🗑️
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -122,7 +159,18 @@ export default function AdminRestock() {
                     <td>{new Date(req.created_at).toLocaleDateString('es-MX')}</td>
                     <td>{req.buyer_name.replace('SELLER: ', '')}</td>
                     <td>{req.quantity} bolsas</td>
-                    <td><span className="badge badge-success">Surtido</span></td>
+                    <td>
+                      <span className="badge badge-success">Surtido</span>
+                      <button 
+                        className="btn btn-ghost"
+                        style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 0, color: 'var(--color-danger)', marginLeft: '1rem' }}
+                        onClick={() => handleDelete(req)}
+                        disabled={loading}
+                        title="Revertir y Eliminar"
+                      >
+                        🗑️
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
