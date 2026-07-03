@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../../../lib/supabase'
 import VisitModal from '../components/VisitModal'
 
 export default function AdminVisits() {
+  const queryClient = useQueryClient()
   const [viewMode, setViewMode] = useState('historico') // historico, agenda
   const [dateFilter, setDateFilter] = useState('all') // all, week, month, today
   const [showModal, setShowModal] = useState(false)
@@ -62,6 +63,17 @@ export default function AdminVisits() {
     enabled: viewMode === 'agenda'
   })
 
+  // 3. Delete Visit Mutation
+  const deleteVisitMutation = useMutation({
+    mutationFn: async (id) => {
+      if (!window.confirm('¿Seguro que deseas eliminar esta visita?')) return
+      const { error } = await supabase.from('visits').delete().eq('id', id)
+      if (error) throw new Error(error.message)
+    },
+    onError: (err) => alert('Error al borrar: ' + err.message),
+    onSuccess: () => queryClient.invalidateQueries(['admin-visits-ledger'])
+  })
+
   return (
     <div className="admin-page">
       <header className="admin-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -102,7 +114,7 @@ export default function AdminVisits() {
 
         {viewMode === 'historico' ? (
           <div className="table-responsive">
-            <table className="admin-table">
+            <table className="clients-table">
             <thead>
               <tr>
                 <th>Fecha/Hora</th>
@@ -111,6 +123,7 @@ export default function AdminVisits() {
                 <th>Tipo de Visita</th>
                 <th>Notas</th>
                 <th style={{ textAlign: 'center' }}>Sello Mapa</th>
+                <th style={{ textAlign: 'center' }}>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -150,6 +163,17 @@ export default function AdminVisits() {
                       <span title="Sin ubicación GPS" style={{ opacity: 0.3 }}>🚫</span>
                     )}
                   </td>
+                  <td style={{ textAlign: 'center' }}>
+                    <button 
+                      className="btn btn-ghost" 
+                      style={{ color: 'var(--color-danger)', padding: '0.25rem' }}
+                      onClick={() => deleteVisitMutation.mutate(v.id)}
+                      disabled={deleteVisitMutation.isLoading}
+                      title="Eliminar Visita"
+                    >
+                      🗑️
+                    </button>
+                  </td>
                 </tr>
               ))}
               </tbody>
@@ -157,7 +181,7 @@ export default function AdminVisits() {
           </div>
         ) : (
           <div className="table-responsive">
-            <table className="admin-table">
+            <table className="clients-table">
               <thead>
                 <tr>
                   <th>Estatus</th>
