@@ -4,6 +4,7 @@ import { useAuthStore } from '../../../store/authStore'
 import { supabase } from '../../../lib/supabase'
 import SignatureCanvas from 'react-signature-canvas'
 import PrintableAgreement from '../../../components/PrintableAgreement'
+import { captureAndShare } from '../../../utils/shareUtils'
 
 export default function SellerAgreement() {
   const { storeIdParam } = useParams()
@@ -256,19 +257,37 @@ export default function SellerAgreement() {
             <h2 style={{ fontSize: '1.1rem' }}>Comprobante de Acuerdo</h2>
             <button className="btn btn-ghost btn-sm" onClick={() => setShowReceipt(false)}>Cerrar</button>
           </div>
-          <div style={{ border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', transform: 'scale(0.8)', transformOrigin: 'top center', marginBottom: '-20%' }}>
-            <PrintableAgreement data={{
-              id: savedAgreementId,
-              type: agreementType,
-              initial_quantity: initialQuantity,
-              canvas_signature: signatureData,
-              created_at: new Date().toISOString(),
-              stores: { 
-                name: stores.find(s => s.id === storeId)?.name,
-                owner_name: signerName || stores.find(s => s.id === storeId)?.owner_name
-              }
-            }} />
+          
+          <div id="agreement-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+            <div style={{ border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', padding: '10px', background: '#fff', maxWidth: '100%' }}>
+              <PrintableAgreement data={{
+                id: savedAgreementId,
+                type: agreementType,
+                initial_quantity: initialQuantity,
+                canvas_signature: signatureData,
+                created_at: new Date().toISOString(),
+                stores: { 
+                  name: stores.find(s => s.id === storeId)?.name,
+                  owner_name: signerName || stores.find(s => s.id === storeId)?.owner_name
+                }
+              }} />
+            </div>
           </div>
+
+          <button 
+            className="btn btn-secondary btn-full" 
+            style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem', background: '#25D366', color: 'white', borderColor: '#25D366' }}
+            onClick={async (e) => {
+              const btn = e.currentTarget;
+              btn.disabled = true;
+              btn.innerHTML = '⏳ Generando...';
+              await captureAndShare('agreement-container', `Acuerdo_Pikanditas_${savedAgreementId?.split('-')[0]}.png`);
+              btn.disabled = false;
+              btn.innerHTML = '📲 Enviar por WhatsApp';
+            }}
+          >
+            📲 Enviar por WhatsApp
+          </button>
         </div>
       )}
     </div>

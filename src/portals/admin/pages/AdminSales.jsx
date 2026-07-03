@@ -4,6 +4,7 @@ import { supabase } from '../../../lib/supabase'
 import SaleReceiptModal from '../components/SaleReceiptModal'
 import SaleEditModal from '../components/SaleEditModal'
 import ReceiptTicket from '../../../components/ReceiptTicket'
+import { captureAndShare } from '../../../utils/shareUtils'
 
 export default function AdminSales() {
   const queryClient = useQueryClient()
@@ -247,13 +248,28 @@ export default function AdminSales() {
         }}>
           <div className="card animate-float-in" style={{ width: '100%', maxWidth: 360, padding: '1rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <ReceiptTicket data={viewingReceipt} />
+              <div id="admin-receipt-ticket-container">
+                <ReceiptTicket data={viewingReceipt} />
+              </div>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <button onClick={() => window.print()} className="btn btn-secondary btn-full">🖨️ Imprimir</button>
+                <button 
+                  onClick={async (e) => {
+                    const btn = e.currentTarget;
+                    const originalText = btn.innerHTML;
+                    btn.disabled = true;
+                    btn.innerHTML = '⏳ Generando...';
+                    await captureAndShare('admin-receipt-ticket-container', `NotaVenta_${viewingReceipt.id.split('-')[0]}.png`);
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                  }} 
+                  className="btn btn-secondary btn-full"
+                >
+                  📤 Compartir / Guardar Imagen
+                </button>
                 <button onClick={() => {
                   const text = `🧾 *NOTA DE VENTA PIKANDITAS*\n\nFolio: ${viewingReceipt.id.split('-')[0].toUpperCase()}\nFecha: ${viewingReceipt.date.toLocaleDateString('es-MX')}\nCliente: ${viewingReceipt.clientName}\n\nConcepto: ${viewingReceipt.quantity} bolsas Pikanditas 60g\nTotal: $${viewingReceipt.total} MXN\n\n🌶️ ¡Pika la vida!\nSíguenos: @Pikanditasmx`
                   window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank')
-                }} className="btn btn-success btn-full" style={{ background: '#25D366', color: 'white' }}>💬 WhatsApp</button>
+                }} className="btn btn-success btn-full" style={{ background: '#25D366', color: 'white' }}>💬 Texto WhatsApp</button>
               </div>
               <button onClick={() => setViewingReceipt(null)} className="btn btn-ghost btn-full">Cerrar</button>
             </div>

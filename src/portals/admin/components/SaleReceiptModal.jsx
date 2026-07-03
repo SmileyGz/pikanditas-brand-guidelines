@@ -3,6 +3,7 @@ import { supabase } from '../../../lib/supabase'
 import { useQueryClient, useQuery } from '@tanstack/react-query'
 import { useAuthStore } from '../../../store/authStore'
 import ReceiptTicket from '../../../components/ReceiptTicket'
+import { captureAndShare } from '../../../utils/shareUtils'
 
 export default function SaleReceiptModal({ onClose, preselectedStoreId = '' }) {
   const queryClient = useQueryClient()
@@ -82,8 +83,14 @@ export default function SaleReceiptModal({ onClose, preselectedStoreId = '' }) {
     }
   }
 
-  const handlePrint = () => {
-    window.print()
+  const handleShareImage = async (e) => {
+    const btn = e.currentTarget;
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Generando...';
+    await captureAndShare('receipt-ticket-container', `NotaVenta_${receiptData.id.split('-')[0]}.png`);
+    btn.disabled = false;
+    btn.innerHTML = originalText;
   }
 
   const handleWhatsApp = () => {
@@ -169,10 +176,12 @@ export default function SaleReceiptModal({ onClose, preselectedStoreId = '' }) {
           </>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <ReceiptTicket data={receiptData} />
+            <div id="receipt-ticket-container">
+              <ReceiptTicket data={receiptData} />
+            </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <button onClick={handlePrint} className="btn btn-secondary btn-full">🖨️ Imprimir</button>
-              <button onClick={handleWhatsApp} className="btn btn-success btn-full" style={{ background: '#25D366', color: 'white' }}>💬 WhatsApp</button>
+              <button onClick={handleShareImage} className="btn btn-secondary btn-full">📤 Guardar / Compartir Imagen</button>
+              <button onClick={handleWhatsApp} className="btn btn-success btn-full" style={{ background: '#25D366', color: 'white' }}>💬 Texto WhatsApp</button>
             </div>
             <button onClick={onClose} className="btn btn-ghost btn-full">Cerrar</button>
           </div>
