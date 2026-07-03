@@ -30,9 +30,10 @@ export default function SaleEditModal({ row, onClose }) {
         const pricePerBag = row.quantity > 0 ? (row.total / row.quantity) : 20
         const newTotal = parseInt(quantity) * pricePerBag
 
+        const table = row.table || 'sales_receipts'
         const { error: err } = await supabase
-          .from('sales_receipts')
-          .update({ quantity: parseInt(quantity), total_mxn: newTotal })
+          .from(table)
+          .update(table === 'online_orders' ? { quantity: parseInt(quantity), total_price: newTotal } : { quantity: parseInt(quantity), total_mxn: newTotal })
           .eq('id', row.id)
         if (err) throw err
       }

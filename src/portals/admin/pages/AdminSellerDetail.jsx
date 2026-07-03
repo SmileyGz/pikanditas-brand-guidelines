@@ -97,6 +97,18 @@ export default function AdminSellerDetail() {
     navigate('/admin/vendedores')
   }
 
+  const handleDeleteSeller = async () => {
+    if (!window.confirm('¿Seguro que deseas eliminar el perfil de este vendedor? Las ventas y visitas previas podrían quedar huérfanas o marcar error. (No elimina su cuenta de acceso, sólo su perfil).')) return
+    setDeleting(true)
+    const { error } = await supabase.from('profiles').delete().eq('id', id)
+    setDeleting(false)
+    if (error) {
+      alert('Error al eliminar vendedor: ' + error.message)
+    } else {
+      navigate('/admin/vendedores')
+    }
+  }
+
   if (isLoading) return <div className="admin-page"><p>Cargando expediente...</p></div>
   if (!seller) return <div className="admin-page"><p>No se encontró el vendedor.</p></div>
 

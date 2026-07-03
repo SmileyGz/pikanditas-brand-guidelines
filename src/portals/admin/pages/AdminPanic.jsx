@@ -36,6 +36,21 @@ export default function AdminPanic() {
     }
   })
 
+  const deleteAlertMutation = useMutation({
+    mutationFn: async (id) => {
+      if (!window.confirm('¿Seguro que quieres eliminar esta alerta permanentemente?')) return
+      const { error } = await supabase.from('panic_events').delete().eq('id', id)
+      if (error) throw new Error(error.message)
+    },
+    onError: (err) => {
+      alert('Error al borrar la alerta: ' + err.message)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['admin-alerts'])
+      queryClient.invalidateQueries(['count-panic'])
+    }
+  })
+
   const openAlerts = alerts.filter(a => a.status === 'open')
   const resolvedAlerts = alerts.filter(a => a.status === 'resolved')
 
@@ -97,6 +112,15 @@ export default function AdminPanic() {
                     >
                       WhatsApp
                     </a>
+                    <button 
+                      className="btn btn-ghost"
+                      style={{ padding: '0.2rem 0.5rem', height: 'auto', minHeight: 0, color: 'var(--color-danger)', marginLeft: '0.5rem' }}
+                      onClick={() => deleteAlertMutation.mutate(a.id)}
+                      disabled={deleteAlertMutation.isLoading}
+                      title="Eliminar permanentemente"
+                    >
+                      🗑️
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -122,7 +146,17 @@ export default function AdminPanic() {
                 <td>{new Date(a.created_at).toLocaleString('es-MX')}</td>
                 <td>{a.profiles?.name} / {a.stores?.name || 'Móvil'}</td>
                 <td>{a.reason}</td>
-                <td><span className="badge badge-success">Resuelto</span></td>
+                <td>
+                  <span className="badge badge-success">Resuelto</span>
+                  <button 
+                    className="btn btn-ghost"
+                    style={{ padding: '0.1rem 0.3rem', minHeight: 0, height: 'auto', color: 'var(--color-danger)', marginLeft: '1rem' }}
+                    onClick={() => deleteAlertMutation.mutate(a.id)}
+                    title="Eliminar del historial"
+                  >
+                    🗑️
+                  </button>
+                </td>
               </tr>
             ))}
             {resolvedAlerts.length === 0 && (

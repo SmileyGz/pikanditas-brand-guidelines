@@ -23,6 +23,9 @@ export default function AdminSales() {
 
       // 3. Fetch Consignments (CxC)
       let consQuery = supabase.from('consignments').select('*, store:stores(name, tier)')
+      
+      // 4. Fetch Online Orders
+      let onlineQuery = supabase.from('online_orders').select('*')
 
       // Apply date filters
       if (dateFilter === 'today') {
@@ -31,25 +34,29 @@ export default function AdminSales() {
         adminSalesQuery = adminSalesQuery.gte('created_at', today.toISOString())
         mobileSalesQuery = mobileSalesQuery.gte('created_at', today.toISOString())
         consQuery = consQuery.gte('created_at', today.toISOString())
+        onlineQuery = onlineQuery.gte('created_at', today.toISOString())
       } else if (dateFilter === 'week') {
         const lastWeek = new Date()
         lastWeek.setDate(lastWeek.getDate() - 7)
         adminSalesQuery = adminSalesQuery.gte('created_at', lastWeek.toISOString())
         mobileSalesQuery = mobileSalesQuery.gte('created_at', lastWeek.toISOString())
         consQuery = consQuery.gte('created_at', lastWeek.toISOString())
+        onlineQuery = onlineQuery.gte('created_at', lastWeek.toISOString())
       } else if (dateFilter === 'month') {
         const lastMonth = new Date()
         lastMonth.setMonth(lastMonth.getMonth() - 1)
         adminSalesQuery = adminSalesQuery.gte('created_at', lastMonth.toISOString())
         mobileSalesQuery = mobileSalesQuery.gte('created_at', lastMonth.toISOString())
         consQuery = consQuery.gte('created_at', lastMonth.toISOString())
+        onlineQuery = onlineQuery.gte('created_at', lastMonth.toISOString())
       }
 
-      const [adminSalesRes, mobileSalesRes, consRes] = await Promise.all([adminSalesQuery, mobileSalesQuery, consQuery])
+      const [adminSalesRes, mobileSalesRes, consRes, onlineRes] = await Promise.all([adminSalesQuery, mobileSalesQuery, consQuery, onlineQuery])
 
       const rawAdminSales = adminSalesRes.error ? [] : (adminSalesRes.data || [])
       const rawMobileSales = mobileSalesRes.error ? [] : (mobileSalesRes.data || [])
       const rawCons = consRes.error ? [] : (consRes.data || [])
+      const rawOnline = onlineRes.error ? [] : (onlineRes.data || [])
 
       const combined = []
 
@@ -86,6 +93,7 @@ export default function AdminSales() {
         const tierPrice = c.store?.tier === 'distributor_10' ? 10 : 12
         combined.push({
           id: c.id,
+          table: 'consignments',
           date: new Date(c.created_at),
           clientName: c.store?.name || 'Tienda Desconocida',
           typeLabel: 'Consignación',
@@ -93,6 +101,20 @@ export default function AdminSales() {
           total: c.stock_delivered * tierPrice,
           status: 'cxc', // Cuentas por Cobrar
           isConsignment: true
+        })
+      })
+
+      rawOnline.forEach(o => {
+        combined.push({
+          id: o.id,
+          table: 'online_orders',
+          date: new Date(o.created_at),
+          clientName: o.buyer_name || o.buyer_email || 'Venta Online',
+          typeLabel: 'Tienda Online',
+          quantity: o.quantity,
+          total: o.total_price,
+          status: o.payment_status === 'success' ? 'paid' : (o.payment_status === 'pending' ? 'pending' : 'failed'),
+          isConsignment: false
         })
       })
 
@@ -111,7 +133,7 @@ export default function AdminSales() {
   const handleDelete = async (row) => {
     if (!window.confirm(`¿Seguro que deseas eliminar esta operación de ${row.clientName}?`)) return
     
-    const table = row.isConsignment ? 'consignments' : 'sales_receipts'
+    const table = row.table || (row.isConsignment ? 'consignments' : 'sales_receipts')
     const { error } = await supabase.from(table).delete().eq('id', row.id)
     
     if (error) {
