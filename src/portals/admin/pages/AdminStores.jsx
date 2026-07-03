@@ -41,7 +41,7 @@ export default function AdminStores() {
   return (
     <div className="admin-page">
       <header className="admin-page-header">
-        <h1 className="admin-page-title">🏪 Tiendas y Clientes</h1>
+        <h1 className="admin-page-title">🏪 Puntos de Venta (PDV)</h1>
         <p className="admin-page-subtitle">Monitoreo del semáforo de rotación</p>
       </header>
       
@@ -65,7 +65,7 @@ export default function AdminStores() {
             </thead>
             <tbody>
               {stores.length === 0 && (
-                <tr><td colSpan="6" style={{textAlign:'center', padding:'2rem'}}>No hay tiendas registradas.</td></tr>
+                <tr><td colSpan="6" style={{textAlign:'center', padding:'2rem'}}>No hay puntos de venta registrados.</td></tr>
               )}
               {stores.map(s => {
                 const semaforo = getSemaforo(s)

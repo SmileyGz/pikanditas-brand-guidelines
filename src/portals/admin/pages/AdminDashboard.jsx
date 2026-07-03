@@ -80,7 +80,7 @@ export default function AdminDashboard() {
   })
 
   const quickActions = [
-    { icon: '🏪', label: 'Nueva Tienda', desc: 'Agregar cliente', to: '/admin/tiendas' },
+    { icon: '🏪', label: 'Nuevo PDV', desc: 'Agregar punto', to: '/admin/tiendas' },
     { icon: '📄', label: 'Nuevo Acuerdo', desc: 'Compra o consignación', to: '/admin/acuerdos' },
     { icon: '📦', label: 'Consignación', desc: 'Registrar entrega', to: '/admin/visitas' },
     { icon: '👤', label: 'Nuevo Vendedor', desc: 'Crear cuenta', to: '/admin/vendedores' },
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
 
       {/* ── KPI Grid ── */}
       <div className="kpi-grid">
-        <StatCard label="Tiendas activas" value={storeCount} sub="Clientes registrados" icon="🏪" />
+        <StatCard label="Puntos de Venta (PDV)" value={storeCount} sub="Aliados B2B" icon="🏪" />
         <StatCard label="Consignaciones activas" value={consignActive} sub="Pendientes de revisión" icon="📦" />
         <StatCard label="Acuerdos pendientes" value={pendingAgreements} sub="Sin firma" icon="📄" />
         <StatCard label="Alertas de pánico" value={panicAlerts} sub={panicAlerts > 0 ? '¡Atención requerida!' : 'Sin alertas'} icon="🚨" />

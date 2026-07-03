@@ -8,10 +8,10 @@ import './AdminLayout.css'
 
 const NAV = [
   { to: 'dashboard',  icon: '📊', label: 'Dashboard' },
-  { to: 'tiendas',    icon: '🏪', label: 'Tiendas' },
+  { to: 'tiendas',    icon: '🏪', label: 'PDV' },
   { to: 'vendedores', icon: '👤', label: 'Vendedores' },
   { to: 'inventario', icon: '📦', label: 'Inventario' },
-  { to: 'resurtido',  icon: '🚚', label: 'Resurtido B2B' },
+  { to: 'resurtido',  icon: '🚚', label: 'Resurtido' },
   { to: 'ventas',     icon: '💰', label: 'Ventas' },
   { to: 'visitas',    icon: '🗓️', label: 'Visitas' },
   { to: 'mapa',       icon: '🗺️', label: 'Mapa Global' },
