@@ -17,7 +17,7 @@ export default function AdminInventory() {
   const bagsYield = kilos ? Math.floor(parseFloat(kilos) * 23) : 0
 
   const { data: stockData, isLoading: isLoadingStock } = useStock()
-  const { totalProduced = 0, totalConsigned = 0, totalSalesB2B = 0, totalSalesOnline = 0, totalInhouse = 0, availableStock = 0 } = stockData || {}
+  const { totalProduced = 0, totalConsigned = 0, totalSalesB2B = 0, totalSalesOnline = 0, totalInhouse = 0, totalAdminSales = 0, availableStock = 0 } = stockData || {}
 
   const { data: logs = [], isLoading } = useQuery({
     queryKey: ['production-logs'],
@@ -206,6 +206,10 @@ export default function AdminInventory() {
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', borderBottom: '1px dashed var(--color-border)' }}>
               <span className="text-muted">Ventas Web (Store)</span>
               <span style={{ color: 'var(--color-warning)' }}>-{totalSalesOnline}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', borderBottom: '1px dashed var(--color-border)' }}>
+              <span className="text-muted">Ventas Admin / Manuales</span>
+              <span style={{ color: 'var(--color-warning)' }}>-{totalAdminSales}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem', borderBottom: '1px dashed var(--color-border)' }}>
               <span className="text-muted">Inventario Móvil (In-house)</span>

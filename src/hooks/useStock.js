@@ -44,8 +44,13 @@ export function useStock() {
         if (profilesErr && profilesErr.code !== '42P01') throw profilesErr
         const totalInhouse = (profilesData || []).reduce((sum, p) => sum + Math.max(0, p.mobile_inventory || 0), 0)
 
+        // 6. Total Ventas Admin (B2C o CxC desde el CRM)
+        const { data: adminSalesData, error: adminSalesErr } = await supabase.from('sales_receipts').select('quantity')
+        if (adminSalesErr && adminSalesErr.code !== '42P01') throw adminSalesErr
+        const totalAdminSales = (adminSalesData || []).reduce((sum, s) => sum + (s.quantity || 0), 0)
+
         // Matemáticas
-        const totalOut = totalConsigned + totalSalesB2B + totalSalesOnline + totalInhouse
+        const totalOut = totalConsigned + totalSalesB2B + totalSalesOnline + totalInhouse + totalAdminSales
         const availableStock = totalProduced - totalOut
 
         return {
@@ -54,6 +59,7 @@ export function useStock() {
           totalSalesB2B,
           totalSalesOnline,
           totalInhouse,
+          totalAdminSales,
           totalOut,
           availableStock: availableStock < 0 ? 0 : availableStock // Prevents negative UI if data is wonky
         }
