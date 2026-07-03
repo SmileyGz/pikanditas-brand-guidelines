@@ -11,6 +11,10 @@ export default function SellerCortes() {
   const [searchParams] = useSearchParams()
   const [stores, setStores] = useState([])
   
+  // Seller Profile State
+  const [sellerType, setSellerType] = useState('externo')
+  const [mobileInventory, setMobileInventory] = useState(0)
+  
   // Wizard State
   const [step, setStep] = useState(1)
   const [selectedStore, setSelectedStore] = useState(null)
@@ -50,6 +54,13 @@ export default function SellerCortes() {
         .eq('assigned_seller', user.id)
       
       if (data) {
+        // Also fetch profile for mobile inventory
+        const { data: profile } = await supabase.from('profiles').select('seller_type, mobile_inventory').eq('id', user.id).single()
+        if (profile) {
+          setSellerType(profile.seller_type || 'externo')
+          setMobileInventory(profile.mobile_inventory || 0)
+        }
+
         // Filter out stores that don't have agreements yet
         const storesWithAgreements = data.filter(s => s.agreements && s.agreements.length > 0)
         setStores(storesWithAgreements)
@@ -154,6 +165,12 @@ export default function SellerCortes() {
         seller_name: user?.user_metadata?.name || 'Agente Pikanditas'
       })
 
+      if (sellerType === 'inhouse') {
+        // Deduct the restocked bags from the seller's mobile inventory
+        await supabase.from('profiles').update({ mobile_inventory: mobileInventory - parsedRestock }).eq('id', user.id)
+        setMobileInventory(prev => prev - parsedRestock)
+      }
+
       if (paymentMethod === 'mercado_pago_qr' && data.sale_id) {
         const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
         const res = await fetch(`${SUPABASE_URL}/functions/v1/create-mp-preference`, {
@@ -200,6 +217,11 @@ export default function SellerCortes() {
         </h1>
         <p style={{ margin: '0.5rem 0 0 0', opacity: 0.9, fontSize: '1rem' }}>
           Realiza inventario físico, cobra ventas y resurte tus tienditas.
+          {sellerType === 'inhouse' && (
+            <span style={{ display: 'block', marginTop: '0.5rem', fontWeight: 700, color: '#fbbf24' }}>
+              🎒 Inventario Móvil: {mobileInventory} bolsas
+            </span>
+          )}
         </p>
       </div>
 
