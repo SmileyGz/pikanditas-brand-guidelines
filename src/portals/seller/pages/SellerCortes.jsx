@@ -133,6 +133,11 @@ export default function SellerCortes() {
 
   const handleSubmit = async () => {
     if (leftQty === '' || restockQty === '') return setError('Llena todos los campos.')
+    
+    if (sellerType === 'inhouse' && parsedRestock > mobileInventory) {
+      return setError(`No tienes suficientes bolsas en tu inventario móvil. (Disponibles: ${mobileInventory})`)
+    }
+
     setLoading(true)
     setError(null)
 

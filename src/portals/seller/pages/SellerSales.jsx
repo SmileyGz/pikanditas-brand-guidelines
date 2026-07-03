@@ -45,6 +45,11 @@ export default function SellerSales() {
       return
     }
 
+    if (sellerType === 'inhouse' && quantity > mobileInventory) {
+      setError(`No tienes suficientes bolsas. Inventario actual: ${mobileInventory}`)
+      return
+    }
+
     setLoading(true)
     setError(null)
     setSuccess(false)
