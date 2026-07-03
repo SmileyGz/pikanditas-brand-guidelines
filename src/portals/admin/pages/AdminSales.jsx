@@ -67,7 +67,7 @@ export default function AdminSales() {
           table: 'sales_receipts',
           date: new Date(s.created_at),
           clientName: s.store?.name || s.client_name || 'B2C Público',
-          typeLabel: s.sale_type === 'b2c_20' ? 'Venta Online/Pública' : (s.sale_type === 'compra_directa_12' ? 'Venta B2B ($12)' : 'Venta Mayorista ($10)'),
+          typeLabel: s.sale_type === 'b2c_20' ? 'Venta Público ($20)' : (s.sale_type === 'compra_directa_12' ? 'Venta B2B ($12)' : 'Venta Mayorista ($10)'),
           quantity: s.quantity,
           total: s.total_mxn,
           status: s.payment_status,

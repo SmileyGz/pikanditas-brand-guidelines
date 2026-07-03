@@ -72,7 +72,7 @@ export default function SaleReceiptModal({ onClose, preselectedStoreId = '' }) {
         clientName: clientNameDisplay,
         quantity: data.quantity,
         total: data.total_mxn,
-        typeLabel: data.sale_type === 'b2c_20' ? 'Venta Online/Pública' : (data.sale_type === 'compra_directa_12' ? 'Venta B2B ($12)' : 'Venta Mayorista ($10)')
+        typeLabel: data.sale_type === 'b2c_20' ? 'Venta Público' : (data.sale_type === 'compra_directa_12' ? 'Venta B2B ($12)' : 'Venta Mayorista ($10)')
       })
 
     } catch (err) {
@@ -119,7 +119,7 @@ export default function SaleReceiptModal({ onClose, preselectedStoreId = '' }) {
               <div className="input-group" style={{ marginBottom: 0 }}>
                 <label className="input-label">Tipo de Venta</label>
                 <select name="sale_type" className="input-field" value={formData.sale_type} onChange={handleChange} required>
-                  <option value="b2c_20">Venta Pública / Online ($20)</option>
+                  <option value="b2c_20">Venta Público ($20)</option>
                   <option value="compra_directa_12">Tiendita B2B ($12)</option>
                   <option value="compra_directa_10">Distribuidor B2B ($10)</option>
                 </select>
