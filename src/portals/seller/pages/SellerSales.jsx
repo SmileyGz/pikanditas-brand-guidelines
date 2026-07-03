@@ -3,6 +3,7 @@ import { useAuthStore } from '../../../store/authStore'
 import { supabase } from '../../../lib/supabase'
 import { QRCodeSVG } from 'qrcode.react'
 import PrintableReceipt from '../../../components/PrintableReceipt'
+import { captureAndShare } from '../../../utils/shareUtils'
 
 export default function SellerSales() {
   const { user } = useAuthStore()
@@ -171,19 +172,27 @@ export default function SellerSales() {
             <h2 style={{ fontSize: '1.1rem' }}>Ticket de Compra</h2>
             <button className="btn btn-ghost btn-sm" onClick={() => setShowReceipt(false)}>Cerrar</button>
           </div>
-          <div style={{ border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', transform: 'scale(0.9)', transformOrigin: 'top center', marginBottom: '-10%' }}>
-            <PrintableReceipt data={savedSaleData} />
+          
+          <div id="receipt-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+            <div style={{ border: '1px solid var(--color-border)', borderRadius: '8px', overflow: 'hidden', padding: '10px', background: '#fff' }}>
+              <PrintableReceipt data={savedSaleData} />
+            </div>
           </div>
           
-          <a 
-            href={`https://wa.me/?text=${encodeURIComponent(`🌶️ *Pikanditas* 🐻\n\n¡Gracias por tu compra!\n\n📄 *Detalle de Venta*\nFolio: ${savedSaleData?.id?.split('-')[0].toUpperCase()}\nTotal Pagado: $${savedSaleData?.total_mxn?.toFixed(2)}\n\nEste es un comprobante digital de tu pago en ${paymentMethod}.`)}`}
-            target="_blank" 
-            rel="noopener noreferrer"
+          <button 
             className="btn btn-secondary btn-full" 
-            style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center', gap: '0.5rem', background: '#25D366', color: 'white', borderColor: '#25D366' }}
+            style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem', background: '#25D366', color: 'white', borderColor: '#25D366' }}
+            onClick={async (e) => {
+              const btn = e.currentTarget;
+              btn.disabled = true;
+              btn.innerHTML = '⏳ Generando...';
+              await captureAndShare('receipt-container', `Ticket_Pikanditas_${savedSaleData?.id?.split('-')[0]}.png`);
+              btn.disabled = false;
+              btn.innerHTML = '📲 Enviar por WhatsApp';
+            }}
           >
             📲 Enviar por WhatsApp
-          </a>
+          </button>
         </div>
       )}
 

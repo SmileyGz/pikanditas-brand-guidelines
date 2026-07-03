@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../../../lib/supabase'
 import AgreementModal from '../components/AgreementModal'
 import PrintableAgreement from '../../../components/PrintableAgreement'
+import { captureAndShare } from '../../../utils/shareUtils'
 
 export default function AdminAgreements() {
   const [dateFilter, setDateFilter] = useState('all') // all, week, month, today
@@ -80,7 +81,20 @@ export default function AdminAgreements() {
             ) : selectedDoc.type === 'contract' ? (
               <div style={{ textAlign: 'left' }}>
                 <PrintableAgreement data={selectedDoc.data} />
-                <button className="btn btn-primary btn-full hide-on-print" style={{ marginTop: '1.5rem' }} onClick={() => window.print()}>🖨️ Imprimir Contrato</button>
+                <button 
+                  className="btn btn-primary btn-full hide-on-print" 
+                  style={{ marginTop: '1.5rem' }} 
+                  onClick={async (e) => {
+                    const btn = e.currentTarget;
+                    btn.disabled = true;
+                    btn.innerHTML = '⏳ Generando imagen...';
+                    await captureAndShare('printable-agreement', `Acuerdo_Pikanditas_${selectedDoc.data.id.split('-')[0]}.png`);
+                    btn.disabled = false;
+                    btn.innerHTML = '📤 Compartir / Guardar Imagen';
+                  }}
+                >
+                  📤 Compartir / Guardar Imagen
+                </button>
               </div>
             ) : <p>No hay documento disponible.</p>}
             <button className="btn btn-secondary btn-full hide-on-print" style={{ marginTop: '1.5rem' }} onClick={() => setSelectedDoc(null)}>Cerrar</button>
