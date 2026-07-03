@@ -36,9 +36,9 @@ export const useAuthStore = create<AuthState>()(
         set({
           user: session.user,
           session,
-          role: meta.role ?? null,
-          entityId: meta.entity_id ?? null,
-          tier: meta.tier ?? null,
+          role: meta.role ?? get().role ?? null,
+          entityId: meta.entity_id ?? get().entityId ?? null,
+          tier: meta.tier ?? get().tier ?? null,
         })
         
         // Fetch actual profile data from database to ensure role is accurate
