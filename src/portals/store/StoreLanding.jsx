@@ -25,8 +25,8 @@ const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 export default function StoreLanding() {
   const { settings } = useSettings()
-  const { data: stockData } = useStock()
-  const availableStock = stockData?.availableStock || 0
+  const { data: stockData, isLoading: stockLoading } = useStock()
+  const availableStock = stockLoading ? 9999 : (stockData?.availableStock || 0)
   
   const [selected, setSelected] = useState(null)
   const [name, setName] = useState('')
