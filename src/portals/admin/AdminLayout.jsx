@@ -13,6 +13,7 @@ const NAV = [
   { to: 'inventario', icon: '📦', label: 'Inventario' },
   { to: 'resurtido',  icon: '🚚', label: 'Resurtido' },
   { to: 'ventas',     icon: '💰', label: 'Ventas' },
+  { to: 'costeo',     icon: '🧾', label: 'Costeo' },
   { to: 'visitas',    icon: '🗓️', label: 'Visitas' },
   { to: 'mapa',       icon: '🗺️', label: 'Mapa Global' },
   { to: 'acuerdos',   icon: '📄', label: 'Acuerdos' },

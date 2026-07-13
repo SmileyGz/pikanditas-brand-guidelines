@@ -18,6 +18,7 @@ const TiendaLanding    = lazy(() => import('./portals/store/TiendaLanding'))
 const AdminLogin       = lazy(() => import('./portals/admin/AdminLogin'))
 const AdminLayout      = lazy(() => import('./portals/admin/AdminLayout'))
 const AdminDashboard   = lazy(() => import('./portals/admin/pages/AdminDashboard'))
+const AdminCosteo      = lazy(() => import('./portals/admin/pages/AdminCosteo'))
 const AdminInventory   = lazy(() => import('./portals/admin/pages/AdminInventory'))
 const AdminSellers     = lazy(() => import('./portals/admin/pages/AdminSellers'))
 const AdminSellerDetail= lazy(() => import('./portals/admin/pages/AdminSellerDetail'))
@@ -148,6 +149,7 @@ export default function App() {
                   </RequireAdmin>
                 }>
                   <Route path="dashboard"  element={<AdminDashboard />} />
+                  <Route path="costeo"     element={<AdminCosteo />} />
                   <Route path="inventario" element={<AdminInventory />} />
                   <Route path="resurtido"  element={<AdminRestock />} />
                   <Route path="vendedores" element={<AdminSellers />} />

@@ -1,45 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './BrandMoodboard.css';
-import CostCalculator from '../../CostCalculator';
 
 function BrandMoodboard() {
-  const [activeTab, setActiveTab] = useState('brand');
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [password, setPassword] = useState('');
-
   const copyToClipboard = (hex) => {
     navigator.clipboard.writeText(hex);
     alert(`¡Copiado ${hex} al portapapeles!`);
   };
 
-  const handleUnlock = (e) => {
-    e.preventDefault();
-    if (password === 'pika2026' || password === '1234') {
-      setIsUnlocked(true);
-    } else {
-      alert('Contraseña incorrecta');
-    }
-  };
-
   return (
     <div className="app-container brand-portal-root">
-      <nav className="tabs-nav">
-        <button 
-          className={`tab-btn ${activeTab === 'brand' ? 'active' : ''}`}
-          onClick={() => setActiveTab('brand')}
-        >
-          Brand Guidelines
-        </button>
-        <button 
-          className={`tab-btn ${activeTab === 'costeo' ? 'active' : ''}`}
-          onClick={() => setActiveTab('costeo')}
-        >
-          🔒 Costeo & Pricing
-        </button>
-      </nav>
-
-      {activeTab === 'brand' && (
-        <div className="moodboard brand-tab">
+      <div className="moodboard brand-tab" style={{ paddingTop: '2rem' }}>
       
       {/* Brand Logo / Tagline */}
       <div className="card tagline-card tilt-left">
@@ -188,30 +158,6 @@ function BrandMoodboard() {
         </ul>
       </div>
         </div>
-      )}
-
-      {activeTab === 'costeo' && (
-        <div className="moodboard costeo-tab">
-          {!isUnlocked ? (
-            <div className="card locked-card">
-              <h3>🔒 Acceso Restringido</h3>
-              <p>Esta sección contiene información confidencial de costos y márgenes de Pikanditas.</p>
-              <form onSubmit={handleUnlock}>
-                <input 
-                  type="password" 
-                  placeholder="Contraseña..." 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="password-input"
-                />
-                <button type="submit" className="unlock-btn">Desbloquear</button>
-              </form>
-            </div>
-          ) : (
-            <CostCalculator />
-          )}
-        </div>
-      )}
 
       {/* Footer */}
       <footer style={{
