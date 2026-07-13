@@ -1,0 +1,16 @@
+{
+  "name": "Pikanditas",
+  "short_name": "Pikanditas",
+  "description": "Las mejores gomitas enchiladas artesanales de Cancún.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF0055",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
